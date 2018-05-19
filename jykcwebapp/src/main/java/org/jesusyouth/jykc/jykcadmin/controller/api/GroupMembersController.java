@@ -91,11 +91,13 @@ public class GroupMembersController {
     }
 
     @PostMapping("/api/group/removemember")
-    public String removemember(@RequestParam Integer groupId,
+    public GroupInfo removemember(@RequestParam Integer groupId,
                                @RequestParam Integer userId) {
         groupMembersRepo.deleteByMemberEquals(userId, groupId);
         committedMembersRepo.updateIsGroupMember(0, userId);
-        return "success";
+        GroupInfo groupInfo = groupInfoRepo.findFirstByGidEquals(groupId);
+        groupInfo.setMessage("success");
+        return groupInfo;
     }
 
     @GetMapping("/api/group/members")
