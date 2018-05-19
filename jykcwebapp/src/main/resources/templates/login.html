@@ -1,0 +1,68 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+                             xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang="" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+                             xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang="" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+                             xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+                             xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>JYKC Admin</title>
+    <meta name="google-signin-client_id" content="364492097622-mla4r6dp0gsnjvntr5g598qph7l7bo59.apps.googleusercontent.com">
+
+
+    <link rel="apple-touch-icon" href="apple-icon.png">
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <!-- <link rel="stylesheet" href="assets/css/bootstrap-select.less"> -->
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 col-md-6 col-md-offset-5" style="margin-top: 30%;">
+
+                    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+
+        </div>
+    </div>
+</div>
+
+
+<form id="signinredirect" action="#" th:action="@{/login}" method="post">
+    <input type="hidden" id="gid" name="uid"/>
+    <input type="hidden" id="gname" name="name"/>
+    <input type="hidden" id="gimage" name="image"/>
+    <input type="hidden" id="gmail" name="email"/>
+</form>
+
+<script>
+
+    function onSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        var usermail = profile.getEmail();
+        document.getElementById('gid').value =profile.getId();
+        document.getElementById('gname').value=profile.getName();
+        document.getElementById('gimage').value=profile.getImageUrl();
+        document.getElementById('gmail').value=profile.getEmail();
+        document.getElementById('signinredirect').submit();
+    }
+
+</script>
+
+</body>
+</html>
