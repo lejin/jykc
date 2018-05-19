@@ -25,6 +25,9 @@ public class GroupMembers {
     @Column(name = "teen_id")
     private Integer teenId;
 
+    @Transient
+    private GroupInfo groupInfo;
+
     public Integer getUid() {
         return uid;
     }
@@ -80,5 +83,13 @@ public class GroupMembers {
 
     public void setTeenId(Integer teenId) {
         this.teenId = teenId;
+    }
+
+    public GroupInfo getGroupInfo() {
+        return groupInfo;
+    }
+
+    public void setGroupInfo(GroupInfo groupInfo) {
+        this.groupInfo = groupInfo;
     }
 }

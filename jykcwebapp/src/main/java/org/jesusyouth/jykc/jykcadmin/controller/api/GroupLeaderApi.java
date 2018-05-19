@@ -95,6 +95,7 @@ public class GroupLeaderApi {
         authUser.setRole(user.getRole());
         authUser.setGroupId(groupId);
         authUser.setZone(zone);
+        authUser.setGroupInfo(groupInfo);
         return authUser;
     }
 

@@ -5,10 +5,7 @@ import org.jesusyouth.jykc.jykcadmin.common.GroupMemberValidationException;
 import org.jesusyouth.jykc.jykcadmin.common.GroupValidations;
 import org.jesusyouth.jykc.jykcadmin.dto.GroupMemberDTO;
 import org.jesusyouth.jykc.jykcadmin.dto.MembersWithTeensDto;
-import org.jesusyouth.jykc.jykcadmin.model.CommittedMember;
-import org.jesusyouth.jykc.jykcadmin.model.FamilyInfo;
-import org.jesusyouth.jykc.jykcadmin.model.GroupMembers;
-import org.jesusyouth.jykc.jykcadmin.model.Teen;
+import org.jesusyouth.jykc.jykcadmin.model.*;
 import org.jesusyouth.jykc.jykcadmin.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +40,9 @@ public class GroupMembersController {
     @Autowired
     private TeensRepo teensRepo;
 
+    @Autowired
+    private GroupInfoRepo groupInfoRepo;
+
 
     @PostMapping("/api/group/addmember")
     public GroupMembers addmember(@RequestParam Integer groupId,
@@ -68,20 +68,24 @@ public class GroupMembersController {
         groupMembers.setAccomadation(accomadation);
         groupMembers.setCategory(category);
         groupMembersRepo.save(groupMembers);
+        CommittedMember committedMember = committedMembersRepo.findFirstByIdEquals(userId);
         if ("family".equals(category)) {
-            CommittedMember committedMember = committedMembersRepo.findFirstByIdEquals(userId);
-            committedMember.setAge(age);
-            committedMember.setGroupMember(true);
 
             FamilyInfo familyInfo = new FamilyInfo();
             familyInfo.setFamilyZoneId(zoneId);
             familyInfo.setFamilygroupId(groupId);
             familyInfo.setFamilyElderId(userId);
             familyInfoRepo.save(familyInfo);
-
+        }
+        if (null != committedMember) {
+            committedMember.setAge(age);
+            committedMember.setGroupMember(true);
+            committedMember.setZoneId(zoneId);
             committedMembersRepo.save(committedMember);
-        } else {
-            committedMembersRepo.updateIsGroupMemberAndAge(1, age, zoneId, userId);
+        }
+        GroupInfo groupInfo = groupInfoRepo.findFirstByGidEquals(groupId);
+        if (null != groupInfo) {
+            groupMembers.setGroupInfo(groupInfo);
         }
         return groupMembers;
     }
