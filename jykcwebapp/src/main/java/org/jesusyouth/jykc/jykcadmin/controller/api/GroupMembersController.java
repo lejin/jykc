@@ -1,6 +1,7 @@
 package org.jesusyouth.jykc.jykcadmin.controller.api;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.jesusyouth.jykc.jykcadmin.common.GroupFee;
 import org.jesusyouth.jykc.jykcadmin.common.GroupMemberValidationException;
 import org.jesusyouth.jykc.jykcadmin.common.GroupValidations;
 import org.jesusyouth.jykc.jykcadmin.dto.GroupMemberDTO;
@@ -53,7 +54,7 @@ public class GroupMembersController {
                                   @RequestParam(required = false) Integer zoneId) {
 
         try {
-            groupValidations.validateGroupMemberAge(category, age);
+            //groupValidations.validateGroupMemberAge(category, age);
             groupValidations.validateGroupMembersCount(groupId);
             groupValidations.validateFamilyCount(groupId);
         } catch (GroupMemberValidationException e) {
@@ -86,17 +87,29 @@ public class GroupMembersController {
         GroupInfo groupInfo = groupInfoRepo.findFirstByGidEquals(groupId);
         if (null != groupInfo) {
             groupMembers.setGroupInfo(groupInfo);
+            Integer groupfee = groupInfo.getGroupFee();
+            groupfee = groupfee + GroupFee.calculateFee(category);
+            groupInfo.setGroupFee(groupfee);
+            groupInfoRepo.save(groupInfo);
         }
         return groupMembers;
     }
 
     @PostMapping("/api/group/removemember")
     public GroupInfo removemember(@RequestParam Integer groupId,
-                               @RequestParam Integer userId) {
-        groupMembersRepo.deleteByMemberEquals(userId, groupId);
-        committedMembersRepo.updateIsGroupMember(0, userId);
+                                  @RequestParam Integer userId) {
+        GroupMembers groupMembers = groupMembersRepo.findFirstByMemberEquals(userId);
         GroupInfo groupInfo = groupInfoRepo.findFirstByGidEquals(groupId);
-        groupInfo.setMessage("success");
+        if (null != groupMembers && null != groupInfo) {
+            String category = groupMembers.getCategory();
+            groupMembersRepo.deleteByMemberEquals(userId,groupId );
+            committedMembersRepo.updateIsGroupMember(0, userId);
+            Integer groupFee = groupInfo.getGroupFee();
+            groupFee = groupFee - GroupFee.calculateFee(category);
+            groupInfo.setGroupFee(groupFee);
+            groupInfoRepo.save(groupInfo);
+            groupInfo.setMessage("success");
+        }
         return groupInfo;
     }
 

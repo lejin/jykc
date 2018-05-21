@@ -34,4 +34,9 @@ public interface GroupMembersRepo extends CrudRepository<GroupMembers,Integer> {
 
     @Transactional
     void deleteGroupMembersByTeenIdEquals(Integer teenId);
+
+    GroupMembers findFirstByMemberEquals(Integer member);
+
+    @Transactional
+    void deleteGroupMembersByMemberEquals(Integer member);
 }

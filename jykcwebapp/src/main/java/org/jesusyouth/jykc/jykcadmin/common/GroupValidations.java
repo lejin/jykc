@@ -46,8 +46,14 @@ public class GroupValidations {
 
     public void validateFamilyCount(Integer groupId) throws GroupMemberValidationException {
         Integer familyCount=groupMembersRepo.countAllByGroupIdEqualsAndCategoryEquals(groupId,"family");
-        if(familyCount>3){
-            throw new GroupMemberValidationException("A group can have only 3 families");
+        Integer groupMemberCount = groupMembersRepo.countAllByGroupIdEquals(groupId);
+
+        if(groupMemberCount==0 && familyCount>=7){
+            throw new GroupMemberValidationException("A family only group can have only 7 families");
+        }
+
+        if(groupMemberCount!=0 && familyCount>=4){
+            throw new GroupMemberValidationException("A group can have only 4 families");
         }
     }
 
