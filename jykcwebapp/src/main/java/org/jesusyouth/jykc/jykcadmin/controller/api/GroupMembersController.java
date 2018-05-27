@@ -44,6 +44,12 @@ public class GroupMembersController {
     @Autowired
     private GroupInfoRepo groupInfoRepo;
 
+    @Autowired
+    private GroupFee groupFeeComponent;
+
+    @Autowired
+    private FamilyMemberRepo familyMemberRepo;
+
 
     @PostMapping("/api/group/addmember")
     public GroupMembers addmember(@RequestParam Integer groupId,
@@ -84,14 +90,7 @@ public class GroupMembersController {
             committedMember.setZoneId(zoneId);
             committedMembersRepo.save(committedMember);
         }
-        GroupInfo groupInfo = groupInfoRepo.findFirstByGidEquals(groupId);
-        if (null != groupInfo) {
-            groupMembers.setGroupInfo(groupInfo);
-            Integer groupfee = groupInfo.getGroupFee()==null?0:groupInfo.getGroupFee();
-            groupfee = groupfee + GroupFee.calculateFee(category);
-            groupInfo.setGroupFee(groupfee);
-            groupInfoRepo.save(groupInfo);
-        }
+        groupMembers.setGroupInfo(groupFeeComponent.updateGroupFee(groupId,category));
         return groupMembers;
     }
 
@@ -99,15 +98,27 @@ public class GroupMembersController {
     public GroupInfo removemember(@RequestParam Integer groupId,
                                   @RequestParam Integer userId) {
         GroupMembers groupMembers = groupMembersRepo.findFirstByMemberEquals(userId);
-        GroupInfo groupInfo = groupInfoRepo.findFirstByGidEquals(groupId);
-        if (null != groupMembers && null != groupInfo) {
+        GroupInfo groupInfo=null;
+
+        if(groupMembers.getTeenId()!=null){
+
+            teensRepo.deleteTeenByTeenIdEquals(groupMembers.getTeenId());
+            groupMembersRepo.deleteGroupMembersByTeenIdEquals(groupMembers.getTeenId());
+            groupInfo=groupFeeComponent.reduceGroupFee(groupId, groupMembers.getCategory());
+            groupInfo.setMessage("success");
+            return groupInfo;
+        }
+
+        if (null != groupMembers) {
             String category = groupMembers.getCategory();
             groupMembersRepo.deleteByMemberEquals(userId,groupId );
             committedMembersRepo.updateIsGroupMember(0, userId);
-            Integer groupFee = groupInfo.getGroupFee();
-            groupFee = groupFee - GroupFee.calculateFee(category);
-            groupInfo.setGroupFee(groupFee);
-            groupInfoRepo.save(groupInfo);
+            groupInfo=groupFeeComponent.reduceGroupFee(groupId, category);
+            if("family".equals(category)){
+                FamilyInfo familyInfo=familyInfoRepo.getFamilyInfoByFamilyElderIdEquals(userId);
+                familyMemberRepo.deleteFamilymembersByFamilyInfoIdEquals(familyInfo.getFamilyId());
+                familyInfoRepo.delete(familyInfo);
+            }
             groupInfo.setMessage("success");
         }
 //        remove family member

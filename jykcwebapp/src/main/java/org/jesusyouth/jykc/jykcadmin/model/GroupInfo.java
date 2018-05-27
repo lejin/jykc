@@ -23,7 +23,7 @@ public class GroupInfo {
     @Column(name = "group_fee")
     private Integer groupFee;
 
-    @Column(name = "group_is_editable",updatable = false)
+    @Column(name = "group_is_editable",updatable = false,insertable = false)
     private boolean editable;
 
     @Transient

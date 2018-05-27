@@ -12,4 +12,6 @@ public interface TeensRepo extends CrudRepository<Teen,Integer> {
     Long deleteTeenByTeenIdEquals(Integer teenId);
 
     List<Teen> findAllByTeenGroupIdEquals(Integer groupId);
+
+    Teen findTeenByTeenIdEquals(Integer teenid);
 }

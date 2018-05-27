@@ -55,6 +55,7 @@ public class GroupLeaderApi {
         groupInfo.setGroupLeader(userId);
         groupInfo.setGroupZone(zone);
         groupInfo.setStatus("pending");
+        groupInfo.setEditable(true);
         groupInfoRepo.save(groupInfo);
 
 

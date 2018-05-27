@@ -11,7 +11,7 @@ public class GroupFee {
     @Autowired
     private GroupInfoRepo groupInfoRepo;
 
-    public static Integer calculateFee(String category) {
+    public Integer calculateFee(String category) {
         switch (category) {
             case "family":
                 return 1500;
@@ -23,13 +23,26 @@ public class GroupFee {
         return 0;
     }
 
-    public GroupInfo updateGroupFee(Integer groupId,String category){
+    public GroupInfo updateGroupFee(Integer groupId, String category) {
         GroupInfo groupInfo = groupInfoRepo.findFirstByGidEquals(groupId);
         if (null != groupInfo) {
-            Integer groupfee = groupInfo.getGroupFee()==null?0:groupInfo.getGroupFee();
-            groupfee = groupfee + GroupFee.calculateFee(category);
+            Integer groupfee = groupInfo.getGroupFee() == null ? 0 : groupInfo.getGroupFee();
+            groupfee = groupfee + calculateFee(category);
             groupInfo.setGroupFee(groupfee);
             groupInfoRepo.save(groupInfo);
+        }
+        return groupInfo;
+    }
+
+    public GroupInfo reduceGroupFee(Integer groupId, String category) {
+        GroupInfo groupInfo = groupInfoRepo.findFirstByGidEquals(groupId);
+        if (null != groupInfo) {
+            Integer groupfee = groupInfo.getGroupFee() == null ? 0 : groupInfo.getGroupFee();
+            if (groupfee > 0) {
+                groupfee = groupfee - calculateFee(category);
+                groupInfo.setGroupFee(groupfee);
+                groupInfoRepo.save(groupInfo);
+            }
         }
         return groupInfo;
     }
