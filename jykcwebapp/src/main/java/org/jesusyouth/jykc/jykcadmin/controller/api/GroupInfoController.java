@@ -22,9 +22,9 @@ public class GroupInfoController {
     public GroupInfo finalSubmit(@RequestParam Integer groupId){
         GroupInfo groupInfo=groupInfoRepo.findFirstByGidEquals(groupId);
         if(null!=groupInfo){
+            groupInfoRepo.updateGroupInfoById(groupId);
             groupInfo.setStatus("submitted");
             groupInfo.setEditable(false);
-            groupInfoRepo.save(groupInfo);
             groupInfo.setMessage("success");
         }else {
             groupInfo=new GroupInfo();
