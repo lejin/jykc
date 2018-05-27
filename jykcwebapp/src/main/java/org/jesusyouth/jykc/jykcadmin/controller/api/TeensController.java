@@ -1,13 +1,12 @@
 package org.jesusyouth.jykc.jykcadmin.controller.api;
 
+import org.jesusyouth.jykc.jykcadmin.common.GroupFee;
 import org.jesusyouth.jykc.jykcadmin.common.GroupMemberValidationException;
 import org.jesusyouth.jykc.jykcadmin.common.GroupValidations;
+import org.jesusyouth.jykc.jykcadmin.model.GroupInfo;
 import org.jesusyouth.jykc.jykcadmin.model.GroupMembers;
 import org.jesusyouth.jykc.jykcadmin.model.Teen;
-import org.jesusyouth.jykc.jykcadmin.repository.CommittedMembersRepo;
-import org.jesusyouth.jykc.jykcadmin.repository.FamilyInfoRepo;
-import org.jesusyouth.jykc.jykcadmin.repository.GroupMembersRepo;
-import org.jesusyouth.jykc.jykcadmin.repository.TeensRepo;
+import org.jesusyouth.jykc.jykcadmin.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TeensController {
     private static final Logger logger = LoggerFactory.getLogger(TeensController.class);
-    public static final String TEENS = "teens";
+    public static final String STUDENT = "student";
 
     @Autowired
     private CommittedMembersRepo committedMembersRepo;
@@ -36,6 +35,9 @@ public class TeensController {
     @Autowired
     private TeensRepo teensRepo;
 
+    @Autowired
+    private GroupFee groupFee;
+
     @PostMapping("/api/teen/add")
     public GroupMembers addTeen(@RequestParam Integer groupId,
                                 @RequestParam boolean accomadation,
@@ -46,7 +48,7 @@ public class TeensController {
                                 @RequestParam(required = false) String email) {
 
         try {
-            groupValidations.validateGroupMemberAge(TEENS, age);
+            groupValidations.validateGroupMemberAge(STUDENT, age);
             groupValidations.validateGroupMembersCount(groupId);
         } catch (GroupMemberValidationException e) {
             logger.error("group id = " + groupId + e.getMessage());
@@ -69,9 +71,11 @@ public class TeensController {
         GroupMembers groupMembers = new GroupMembers();
         groupMembers.setGroupId(groupId);
         groupMembers.setAccomadation(accomadation);
-        groupMembers.setCategory(TEENS);
+        groupMembers.setCategory(STUDENT);
         groupMembers.setTeenId(teen.getTeenId());
         groupMembersRepo.save(groupMembers);
+        // update group fee
+        groupMembers.setGroupInfo(groupFee.updateGroupFee(groupId,STUDENT));
         return groupMembers;
     }
 
