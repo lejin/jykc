@@ -2,6 +2,7 @@ package org.jesusyouth.jykc.jykcadmin.controller.api;
 
 import org.jesusyouth.jykc.jykcadmin.Constants.ZoneNames;
 
+import org.jesusyouth.jykc.jykcadmin.common.GroupFee;
 import org.jesusyouth.jykc.jykcadmin.common.GroupValidations;
 import org.jesusyouth.jykc.jykcadmin.model.*;
 import org.jesusyouth.jykc.jykcadmin.repository.*;
@@ -36,6 +37,9 @@ public class GroupLeaderApi {
     @Autowired
     private GroupValidations  groupValidations;
 
+    @Autowired
+    private GroupFee groupFee;
+
     @PostMapping("/api/groupleader")
     public AuthUser verifyGroupLeader(@RequestParam String phone,
                                       @RequestParam Integer age ,
@@ -56,6 +60,7 @@ public class GroupLeaderApi {
         groupInfo.setGroupZone(zone);
         groupInfo.setStatus("pending");
         groupInfo.setEditable(true);
+        groupInfo.setGroupFee(groupFee.calculateFee(category));
         groupInfoRepo.save(groupInfo);
 
 

@@ -23,10 +23,10 @@ public class GroupFee {
         return 0;
     }
 
-    public GroupInfo updateGroupFee(Integer groupId, String category) {
+    public GroupInfo updateGroupFee(Integer groupId,String category){
         GroupInfo groupInfo = groupInfoRepo.findFirstByGidEquals(groupId);
         if (null != groupInfo) {
-            Integer groupfee = groupInfo.getGroupFee() == null ? 0 : groupInfo.getGroupFee();
+            Integer groupfee = groupInfo.getGroupFee()==null?0:groupInfo.getGroupFee();
             groupfee = groupfee + calculateFee(category);
             groupInfo.setGroupFee(groupfee);
             groupInfoRepo.save(groupInfo);
@@ -34,17 +34,26 @@ public class GroupFee {
         return groupInfo;
     }
 
-    public GroupInfo reduceGroupFee(Integer groupId, String category) {
+    public GroupInfo reduceGroupFee(Integer groupId,String category){
         GroupInfo groupInfo = groupInfoRepo.findFirstByGidEquals(groupId);
+        reducefee(groupInfo, category);
+        return groupInfo;
+    }
+
+    public GroupInfo reduceGroupFee(GroupInfo groupInfo,String category){
+        reducefee(groupInfo, category);
+        return groupInfo;
+    }
+
+    private void reducefee(GroupInfo groupInfo, String category) {
         if (null != groupInfo) {
-            Integer groupfee = groupInfo.getGroupFee() == null ? 0 : groupInfo.getGroupFee();
-            if (groupfee > 0) {
+            Integer groupfee = groupInfo.getGroupFee()==null?0:groupInfo.getGroupFee();
+            if(groupfee>0){
                 groupfee = groupfee - calculateFee(category);
                 groupInfo.setGroupFee(groupfee);
                 groupInfoRepo.save(groupInfo);
             }
         }
-        return groupInfo;
     }
 
 }

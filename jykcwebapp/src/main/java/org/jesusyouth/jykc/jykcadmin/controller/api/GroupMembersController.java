@@ -96,7 +96,7 @@ public class GroupMembersController {
 
     @PostMapping("/api/group/removemember")
     public GroupInfo removemember(@RequestParam Integer groupId,
-                                  @RequestParam Integer userId) {
+                                  @RequestParam(required = false) Integer userId) {
         GroupMembers groupMembers = groupMembersRepo.findFirstByMemberEquals(userId);
         GroupInfo groupInfo=null;
 
@@ -110,10 +110,19 @@ public class GroupMembersController {
         }
 
         if (null != groupMembers) {
+
+            groupInfo = groupInfoRepo.findFirstByGidEquals(groupId);
+            if(null!=groupInfo && groupInfo.getGroupLeader()==userId){
+                groupInfo.setMessage("can't delete group leader");
+                return groupInfo;
+            }
+
             String category = groupMembers.getCategory();
             groupMembersRepo.deleteByMemberEquals(userId,groupId );
             committedMembersRepo.updateIsGroupMember(0, userId);
-            groupInfo=groupFeeComponent.reduceGroupFee(groupId, category);
+
+            groupInfo=groupFeeComponent.reduceGroupFee(groupInfo, category);
+
             if("family".equals(category)){
                 FamilyInfo familyInfo=familyInfoRepo.getFamilyInfoByFamilyElderIdEquals(userId);
                 familyMemberRepo.deleteFamilymembersByFamilyInfoIdEquals(familyInfo.getFamilyId());

@@ -17,6 +17,13 @@ public class GroupValidations {
         }
     }
 
+    public void validateGroupCountForSubmission(Integer groupId) throws GroupMemberValidationException {
+        Integer groupMemberCount = groupMembersRepo.countAllByGroupIdEquals(groupId);
+        if (groupMemberCount < 4 || groupMemberCount > 10) {
+            throw new GroupMemberValidationException("Group can have only 6 to 10 members !");
+        }
+    }
+
     public void validateGroupMemberAge(String category, Integer age) throws GroupMemberValidationException {
         switch (category) {
             case "teens":
@@ -24,21 +31,10 @@ public class GroupValidations {
                     throw new GroupMemberValidationException("Teen should be between 13 and 18");
                 }
                 break;
-            case "youth":
-                if (age <= 18) {
-                    throw new GroupMemberValidationException("Youth should be 18+");
-                }
-                break;
-
-            case "pre teens":
-                if (age < 8 || age > 12) {
-                    throw new GroupMemberValidationException("pre teens shoud be between 8 and 12");
-                }
-                break;
 
             case "kids":
-                if (age < 8 || age > 12) {
-                    throw new GroupMemberValidationException("kids shoud be between 4 and 7");
+                if (age > 12) {
+                    throw new GroupMemberValidationException("kids shoud be below 13");
                 }
                 break;
         }
