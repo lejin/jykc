@@ -43,7 +43,7 @@ public class TeensController {
                                 @RequestParam String name,
                                 @RequestParam String gender,
                                 @RequestParam String phone,
-                                @RequestParam String email) {
+                                @RequestParam(required = false) String email) {
 
         try {
             groupValidations.validateGroupMemberAge(TEENS, age);
@@ -54,6 +54,8 @@ public class TeensController {
             groupMembers.setMessage(e.getMessage());
             return groupMembers;
         }
+
+        //add fee
 
         Teen teen = new Teen();
         teen.setTeenGroupId(groupId);

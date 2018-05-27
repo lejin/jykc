@@ -87,7 +87,7 @@ public class GroupMembersController {
         GroupInfo groupInfo = groupInfoRepo.findFirstByGidEquals(groupId);
         if (null != groupInfo) {
             groupMembers.setGroupInfo(groupInfo);
-            Integer groupfee = groupInfo.getGroupFee();
+            Integer groupfee = groupInfo.getGroupFee()==null?0:groupInfo.getGroupFee();
             groupfee = groupfee + GroupFee.calculateFee(category);
             groupInfo.setGroupFee(groupfee);
             groupInfoRepo.save(groupInfo);
@@ -110,6 +110,7 @@ public class GroupMembersController {
             groupInfoRepo.save(groupInfo);
             groupInfo.setMessage("success");
         }
+//        remove family member
         return groupInfo;
     }
 
