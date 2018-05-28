@@ -96,23 +96,24 @@ public class GroupMembersController {
 
     @PostMapping("/api/group/removemember")
     public GroupInfo removemember(@RequestParam Integer groupId,
-                                  @RequestParam(required = false) Integer userId) {
-        GroupMembers groupMembers = groupMembersRepo.findFirstByMemberEquals(userId);
+                                  @RequestParam(required = false) Integer userId,
+                                  @RequestParam(required = false) Integer teenId) {
+
         GroupInfo groupInfo=null;
 
-        if(groupMembers.getTeenId()!=null){
+        if(teenId!=null){
 
-            teensRepo.deleteTeenByTeenIdEquals(groupMembers.getTeenId());
-            groupMembersRepo.deleteGroupMembersByTeenIdEquals(groupMembers.getTeenId());
-            groupInfo=groupFeeComponent.reduceGroupFee(groupId, groupMembers.getCategory());
+            teensRepo.deleteTeenByTeenIdEquals(teenId);
+            groupMembersRepo.deleteGroupMembersByTeenIdEquals(teenId);
+            groupInfo=groupFeeComponent.reduceGroupFee(groupId, "student");
             groupInfo.setMessage("success");
             return groupInfo;
         }
-
+        GroupMembers groupMembers = groupMembersRepo.findFirstByMemberEquals(userId);
         if (null != groupMembers) {
 
             groupInfo = groupInfoRepo.findFirstByGidEquals(groupId);
-            if(null!=groupInfo && groupInfo.getGroupLeader()==userId){
+            if(null!=groupInfo && groupInfo.getGroupLeader().equals(userId)){
                 groupInfo.setMessage("can't delete group leader");
                 return groupInfo;
             }
@@ -157,6 +158,7 @@ public class GroupMembersController {
                     membersWithTeensDto.setGender(e.getTeenGender());
                     membersWithTeensDto.setPhone_number(e.getTeenPhone());
                     membersWithTeensDto.setName(e.getTeenName());
+                    membersWithTeensDto.setCategory("student");
                     membersWithTeensDto.setTeenId(e.getTeenId());
                     membersWithTeensDtos.add(membersWithTeensDto);
                 } catch (Exception ex) {

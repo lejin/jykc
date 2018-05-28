@@ -32,8 +32,8 @@ public class GroupValidations {
                 }
                 break;
 
-            case "kids":
-                if (age > 12) {
+            case "kid":
+                if (age >= 13) {
                     throw new GroupMemberValidationException("kids shoud be below 13");
                 }
                 break;

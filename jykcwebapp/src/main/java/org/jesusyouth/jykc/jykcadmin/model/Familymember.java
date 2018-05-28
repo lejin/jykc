@@ -25,6 +25,9 @@ public class Familymember {
     @Column(name = "family_member_relation")
     private String FamilyMemberRelation;
 
+    @Transient
+    private String message;
+
     public Integer getFamilyMemberId() {
         return familyMemberId;
     }
@@ -71,5 +74,13 @@ public class Familymember {
 
     public void setFamilyMemberRelation(String familyMemberRelation) {
         FamilyMemberRelation = familyMemberRelation;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

@@ -1,5 +1,6 @@
 package org.jesusyouth.jykc.jykcadmin.controller.api;
 
+import org.jesusyouth.jykc.jykcadmin.common.GroupValidations;
 import org.jesusyouth.jykc.jykcadmin.dto.FamilyDTO;
 import org.jesusyouth.jykc.jykcadmin.dto.FamilyMembers;
 import org.jesusyouth.jykc.jykcadmin.model.FamilyInfo;
@@ -23,6 +24,9 @@ public class FamilyController {
     @Autowired
     private FamilyMemberRepo familyMemberRepo;
 
+    @Autowired
+    private GroupValidations groupValidations;
+
     @PostMapping("/api/family/create")
     public FamilyInfo createFamily(@RequestParam Integer userid,
                                    @RequestParam Integer zoneId,
@@ -42,6 +46,13 @@ public class FamilyController {
                                   @RequestParam String familyMemberGender,
                                   @RequestParam(required = false) String familyMemberRelation){
         Familymember familymember=new Familymember();
+        if(familyMemberRelation!=null && familyMemberRelation.toLowerCase().contains("kid")){
+            try {
+                groupValidations.validateGroupMemberAge("kid", familyMemberAge);
+            }catch (Exception e){
+                familymember.setMessage(e.getMessage());
+            }
+        }
         familymember.setFamilyInfoId(familyInfoId);
         familymember.setFamilyMemberName(familymemberName);
         familymember.setFamilymemberAge(familyMemberAge);
