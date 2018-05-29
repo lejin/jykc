@@ -139,8 +139,7 @@ public class GroupLeaderApi {
             user.setApproved(false);
             usersRepo.save(user);
         }catch (Exception e){
-            logger.error(e.getMessage());
-            logger.error("group leader reject failed auth id "+authId);
+            logger.error("XXXXXXX   validation error"+e.getMessage());
             approvalResponse.setMessage("failed");
             return approvalResponse;
         }

@@ -4,6 +4,7 @@ import org.jesusyouth.jykc.jykcadmin.common.GroupMemberValidationException;
 import org.jesusyouth.jykc.jykcadmin.common.GroupValidations;
 import org.jesusyouth.jykc.jykcadmin.model.GroupInfo;
 import org.jesusyouth.jykc.jykcadmin.repository.GroupInfoRepo;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,8 @@ public class GroupInfoController {
 
     @Autowired
     private GroupValidations groupValidations;
+
+    private static org.slf4j.Logger logger = LoggerFactory.getLogger(ApiAccessLogger.class);
 
     @GetMapping("/api/group/info")
     public GroupInfo getGroupInfo(@RequestParam Integer groupId){
@@ -34,6 +37,7 @@ public class GroupInfoController {
                 groupInfo.setEditable(false);
                 groupInfo.setMessage("success");
             } catch (GroupMemberValidationException e) {
+                logger.error("XXXXXXX   validation error"+e.getMessage());
                 groupInfo=new GroupInfo();
                 groupInfo.setMessage(e.getMessage());
                 return groupInfo;

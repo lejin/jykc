@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -64,7 +65,7 @@ public class GroupMembersController {
             groupValidations.validateGroupMembersCount(groupId);
             groupValidations.validateFamilyCount(groupId);
         } catch (GroupMemberValidationException e) {
-            logger.error("user id = " + userId + e.getMessage());
+            logger.error("XXXXXXX   validation error"+e.getMessage());
             GroupMembers groupMembers = new GroupMembers();
             groupMembers.setMessage(e.getMessage());
             return groupMembers;
@@ -96,36 +97,37 @@ public class GroupMembersController {
 
     @PostMapping("/api/group/removemember")
     public GroupInfo removemember(@RequestParam Integer groupId,
-                                  @RequestParam(required = false) Integer userId,
-                                  @RequestParam(required = false) Integer teenId) {
+                                  @RequestParam(required = false) String userId,
+                                  @RequestParam(required = false) String teenId) {
 
         GroupInfo groupInfo=null;
 
-        if(teenId!=null){
-
-            teensRepo.deleteTeenByTeenIdEquals(teenId);
-            groupMembersRepo.deleteGroupMembersByTeenIdEquals(teenId);
+        if(null!=teenId && !"null".equals(teenId) && !StringUtils.isEmpty(teenId)){
+            Integer teen=Integer.valueOf(StringUtils.trimAllWhitespace(teenId));
+            teensRepo.deleteTeenByTeenIdEquals(teen);
+            groupMembersRepo.deleteGroupMembersByTeenIdEquals(teen);
             groupInfo=groupFeeComponent.reduceGroupFee(groupId, "student");
             groupInfo.setMessage("success");
             return groupInfo;
         }
-        GroupMembers groupMembers = groupMembersRepo.findFirstByMemberEquals(userId);
+        Integer userIdInt=Integer.valueOf(StringUtils.trimAllWhitespace(userId));
+        GroupMembers groupMembers = groupMembersRepo.findFirstByMemberEquals(userIdInt);
         if (null != groupMembers) {
 
             groupInfo = groupInfoRepo.findFirstByGidEquals(groupId);
-            if(null!=groupInfo && groupInfo.getGroupLeader().equals(userId)){
+            if(null!=groupInfo && groupInfo.getGroupLeader().equals(userIdInt)){
                 groupInfo.setMessage("can't delete group leader");
                 return groupInfo;
             }
 
             String category = groupMembers.getCategory();
-            groupMembersRepo.deleteByMemberEquals(userId,groupId );
-            committedMembersRepo.updateIsGroupMember(0, userId);
+            groupMembersRepo.deleteByMemberEquals(userIdInt,groupId );
+            committedMembersRepo.updateIsGroupMember(0, userIdInt);
 
             groupInfo=groupFeeComponent.reduceGroupFee(groupInfo, category);
 
             if("family".equals(category)){
-                FamilyInfo familyInfo=familyInfoRepo.getFamilyInfoByFamilyElderIdEquals(userId);
+                FamilyInfo familyInfo=familyInfoRepo.getFamilyInfoByFamilyElderIdEquals(userIdInt);
                 familyMemberRepo.deleteFamilymembersByFamilyInfoIdEquals(familyInfo.getFamilyId());
                 familyInfoRepo.delete(familyInfo);
             }

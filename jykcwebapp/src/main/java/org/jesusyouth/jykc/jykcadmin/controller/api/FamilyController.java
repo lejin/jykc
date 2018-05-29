@@ -7,6 +7,8 @@ import org.jesusyouth.jykc.jykcadmin.model.FamilyInfo;
 import org.jesusyouth.jykc.jykcadmin.model.Familymember;
 import org.jesusyouth.jykc.jykcadmin.repository.FamilyInfoRepo;
 import org.jesusyouth.jykc.jykcadmin.repository.FamilyMemberRepo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +28,8 @@ public class FamilyController {
 
     @Autowired
     private GroupValidations groupValidations;
+
+    private static final Logger logger = LoggerFactory.getLogger(FamilyController.class);
 
     @PostMapping("/api/family/create")
     public FamilyInfo createFamily(@RequestParam Integer userid,
@@ -50,6 +54,7 @@ public class FamilyController {
             try {
                 groupValidations.validateGroupMemberAge("kid", familyMemberAge);
             }catch (Exception e){
+                logger.error("XXXXXXX   validation error"+e.getMessage());
                 familymember.setMessage(e.getMessage());
             }
         }

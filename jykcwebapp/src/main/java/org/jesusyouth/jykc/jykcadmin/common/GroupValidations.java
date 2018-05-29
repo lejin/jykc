@@ -19,7 +19,10 @@ public class GroupValidations {
 
     public void validateGroupCountForSubmission(Integer groupId) throws GroupMemberValidationException {
         Integer groupMemberCount = groupMembersRepo.countAllByGroupIdEquals(groupId);
-        if (groupMemberCount < 4 || groupMemberCount > 10) {
+        if (groupMemberCount < 4) {
+            throw new GroupMemberValidationException("Group should have 6 to 10 members !");
+        }
+        if (groupMemberCount > 10) {
             throw new GroupMemberValidationException("Group can have only 6 to 10 members !");
         }
     }
