@@ -46,7 +46,7 @@ public class Authenticate {
         }
         User user = usersRepo.findFirstByEmailLikeOrPhoneLike(email, phone);
         if (null == user) {
-            CommittedMember committedMember = committedMembersRepo.findCommittedMemberByEmailLikeOrPhoneLike(email, phone);
+            CommittedMember committedMember = committedMembersRepo.findFirstCommittedMemberByEmailLikeOrPhoneLike(email, phone);
             if (null != committedMember) {
 //                committed member login first time
                 User newUser = new User();

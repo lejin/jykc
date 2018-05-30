@@ -13,7 +13,7 @@ public interface CommittedMembersRepo extends CrudRepository<CommittedMember,Int
 
     CommittedMember findCommittedMemberByZoneIdAndEmailLikeOrPhoneLike(Integer zoneId,String email,String phoneNumber);
 
-    CommittedMember findCommittedMemberByEmailLikeOrPhoneLike(String email ,String phone);
+    CommittedMember findFirstCommittedMemberByEmailLikeOrPhoneLike(String email , String phone);
 
     @Modifying
     @Transactional

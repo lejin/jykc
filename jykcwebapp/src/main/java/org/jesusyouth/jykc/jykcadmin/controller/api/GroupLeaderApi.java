@@ -80,7 +80,7 @@ public class GroupLeaderApi {
         committedMembersRepo.updateIsGroupLeaderAndAge(1,age,zone,userId);
         String role=user.getRole();
         if(!StringUtils.isEmpty(role) && !role.contains("group_leader")){
-            if("user".equals(role) || "member".equals(role)){
+            if("member".equals(role)){
                 user.setRole("group_leader");
             }
         }else if(!StringUtils.isEmpty(role) && role.contains("group_leader")){
