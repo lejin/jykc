@@ -33,7 +33,7 @@ public class Authenticate {
     @GetMapping("/api/authenticate")
     private AuthUser getUserDetails(@RequestParam String email,
                                     @RequestParam String googleid,
-                                    @RequestParam String image,
+                                    @RequestParam(required = false) String image,
                                     @RequestParam String name,
                                     @RequestParam(required = false,defaultValue = DEFAULT) String phone) {
         logger.info("inside /api/authenticate");
