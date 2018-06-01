@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TeensController {
     private static final Logger logger = LoggerFactory.getLogger(TeensController.class);
     public static final String STUDENT = "student";
+    private static final String TEEN="teen";
 
     @Autowired
     private CommittedMembersRepo committedMembersRepo;
@@ -48,7 +49,7 @@ public class TeensController {
                                 @RequestParam(required = false) String email) {
 
         try {
-            groupValidations.validateGroupMemberAge(STUDENT, age);
+            groupValidations.validateGroupMemberAge(TEEN, age);
             groupValidations.validateGroupMembersCount(groupId);
         } catch (GroupMemberValidationException e) {
             logger.error("XXXXXXX   validation error"+e.getMessage());
