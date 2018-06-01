@@ -56,6 +56,7 @@ public class FamilyController {
             }catch (Exception e){
                 logger.error("XXXXXXX   validation error"+e.getMessage());
                 familymember.setMessage(e.getMessage());
+                return familymember;
             }
         }
         familymember.setFamilyInfoId(familyInfoId);
@@ -64,6 +65,7 @@ public class FamilyController {
         familymember.setFamilyMemberGender(familyMemberGender);
         familymember.setFamilyMemberRelation(familyMemberRelation);
         familyMemberRepo.save(familymember);
+        familymember.setMessage("success");
         return familymember;
     }
 
