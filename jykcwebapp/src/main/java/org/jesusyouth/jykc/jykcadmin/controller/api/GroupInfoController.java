@@ -38,7 +38,7 @@ public class GroupInfoController {
                 groupInfo.setMessage("success");
             } catch (GroupMemberValidationException e) {
                 logger.error("XXXXXXX   validation error"+e.getMessage());
-                groupInfo=new GroupInfo();
+                //groupInfo=new GroupInfo();
                 groupInfo.setMessage(e.getMessage());
                 return groupInfo;
             }

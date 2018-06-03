@@ -48,9 +48,9 @@ public class FamilyController {
                                   @RequestParam String familymemberName,
                                   @RequestParam Integer familyMemberAge,
                                   @RequestParam String familyMemberGender,
-                                  @RequestParam(required = false) String familyMemberRelation){
+                                  @RequestParam String familyMemberRelation){
         Familymember familymember=new Familymember();
-        if(familyMemberRelation!=null && familyMemberRelation.toLowerCase().contains("kid")){
+        if(familyMemberRelation!=null && "kid".equals(familyMemberRelation)){
             try {
                 groupValidations.validateGroupMemberAge("kid", familyMemberAge);
             }catch (Exception e){

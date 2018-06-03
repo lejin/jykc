@@ -137,6 +137,9 @@ public class GroupLeaderApi {
             groupMembersRepo.deleteByGroupIdEquals(groupInfo.getGid());
             groupInfoRepo.delete(groupInfo);
             user.setApproved(false);
+            if("group_leader".equals(user.getRole())){
+                user.setRole("member");
+            }
             usersRepo.save(user);
         }catch (Exception e){
             logger.error("XXXXXXX   validation error"+e.getMessage());
