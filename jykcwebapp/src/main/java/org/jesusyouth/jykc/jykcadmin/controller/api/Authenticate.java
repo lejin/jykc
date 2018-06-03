@@ -53,26 +53,27 @@ public class Authenticate {
                 if(!DEFAULT.equals(phone)){
                     newUser.setPhone(phone);
                 }
-//                check if user changed to group leader
                 newUser.setUserId(committedMember.getId());
                 newUser.setZone(committedMember.getZoneId());
                 newUser.setRole("member");
                 newUser.setEmail(email);
                 newUser.setImage(image);
-                newUser.setName(name);
+                newUser.setName(committedMember.getName());
                 newUser.setUid(googleid);
                 usersRepo.save(newUser);
                 return convertFromUser(newUser);
             }
         } else {
+            //retuning user
             return convertFromUser(user);
         }
+
+        //        normal user login first time
 
         User newUser = new User();
         if(!DEFAULT.equals(phone)){
             newUser.setPhone(phone);
         }
-//        normal user login first time
         newUser.setRole("user");
         newUser.setEmail(email);
         newUser.setImage(image);
