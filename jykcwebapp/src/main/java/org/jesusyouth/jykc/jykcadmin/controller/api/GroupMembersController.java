@@ -1,6 +1,7 @@
 package org.jesusyouth.jykc.jykcadmin.controller.api;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.jesusyouth.jykc.jykcadmin.common.FamilyUtil;
 import org.jesusyouth.jykc.jykcadmin.common.GroupFee;
 import org.jesusyouth.jykc.jykcadmin.common.GroupMemberValidationException;
 import org.jesusyouth.jykc.jykcadmin.common.GroupValidations;
@@ -51,6 +52,8 @@ public class GroupMembersController {
     @Autowired
     private FamilyMemberRepo familyMemberRepo;
 
+    @Autowired
+    private FamilyUtil familyUtil;
 
     @PostMapping("/api/group/addmember")
     public GroupMembers addmember(@RequestParam Integer groupId,
@@ -78,12 +81,7 @@ public class GroupMembersController {
         groupMembersRepo.save(groupMembers);
         CommittedMember committedMember = committedMembersRepo.findFirstByIdEquals(userId);
         if ("family".equals(category)) {
-
-            FamilyInfo familyInfo = new FamilyInfo();
-            familyInfo.setFamilyZoneId(zoneId);
-            familyInfo.setFamilygroupId(groupId);
-            familyInfo.setFamilyElderId(userId);
-            familyInfoRepo.save(familyInfo);
+            familyUtil.createFamily(groupId, userId, zoneId);
         }
         if (null != committedMember) {
             committedMember.setAge(age);

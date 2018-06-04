@@ -2,6 +2,7 @@ package org.jesusyouth.jykc.jykcadmin.controller.api;
 
 import org.jesusyouth.jykc.jykcadmin.Constants.ZoneNames;
 
+import org.jesusyouth.jykc.jykcadmin.common.FamilyUtil;
 import org.jesusyouth.jykc.jykcadmin.common.GroupFee;
 import org.jesusyouth.jykc.jykcadmin.common.GroupValidations;
 import org.jesusyouth.jykc.jykcadmin.model.*;
@@ -39,6 +40,9 @@ public class GroupLeaderApi {
 
     @Autowired
     private GroupFee groupFee;
+
+    @Autowired
+    private FamilyUtil familyUtil;
 
     @PostMapping("/api/groupleader")
     public AuthUser verifyGroupLeader(@RequestParam String phone,
@@ -91,6 +95,9 @@ public class GroupLeaderApi {
             role.concat("|group_leader");
             user.setApproved(true);
             user.setRole(role);
+        }
+        if ("family".equals(category)) {
+            familyUtil.createFamily(groupId, userId, zone);
         }
         user.setPhone(phone);
         user.setZone(zone);
