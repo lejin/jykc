@@ -30,7 +30,7 @@ public class GroupController {
     @GetMapping("/zonaladmin/group_info")
     public String getGroupInfo(Model model, HttpSession httpSession) {
         Integer zone = (Integer) httpSession.getAttribute("zone");
-        model.addAttribute("group_info", groupInfoRepo.findGroupInfoByZone(zone));
+        model.addAttribute("group_info", groupInfoRepo.findGroupInfoWithMembersCount(zone));
         return "group_info";
 
     }

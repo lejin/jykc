@@ -12,4 +12,6 @@ public interface FamilyInfoRepo extends CrudRepository<FamilyInfo,Integer> {
     @Transactional
     void deleteFamilyInfoByFamilyElderIdEquals(Integer id);
 
+    Integer countByFamilyZoneIdEquals(Integer zoneId);
+
 }

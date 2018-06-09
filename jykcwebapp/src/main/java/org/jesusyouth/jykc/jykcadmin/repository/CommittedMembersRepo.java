@@ -1,5 +1,6 @@
 package org.jesusyouth.jykc.jykcadmin.repository;
 
+import org.jesusyouth.jykc.jykcadmin.dto.HomeStatus;
 import org.jesusyouth.jykc.jykcadmin.model.CommittedMember;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -36,4 +37,6 @@ public interface CommittedMembersRepo extends CrudRepository<CommittedMember,Int
     void updateIsGroupMemberAndAge(Integer isGroupMember,Integer age,Integer zoneId,Integer memberID);
 
     CommittedMember findFirstByIdEquals(Integer id);
+
+    Integer countCommittedMemberByZoneIdEquals(Integer zoneId);
 }

@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/zonaladmin/*" })
-public class AuthenticationFilter implements Filter{
+@WebFilter(urlPatterns = {"/zonaladmin/*"})
+public class AuthenticationFilter implements Filter {
 
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
 
@@ -25,12 +25,16 @@ public class AuthenticationFilter implements Filter{
     public void doFilter(ServletRequest arg0, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) arg0;
-        HttpServletResponse httpServletResponse= (HttpServletResponse) response;
+        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         String path = request.getRequestURI().substring(request.getContextPath().length()).replaceAll("[/]+$", "");
         HttpSession session = request.getSession(false);
-        if (null==session || StringUtils.isEmpty(session.getAttribute("uid"))) {
+        if (null == session || StringUtils.isEmpty(session.getAttribute("uid"))) {
             httpServletResponse.sendRedirect("/login");
-        } else {
+        }  else {
+            String role=(String) session.getAttribute("role");
+            if (!role.contains("zonal_admin")){
+                httpServletResponse.sendRedirect("/403");
+            }
             chain.doFilter(request, response);
         }
     }

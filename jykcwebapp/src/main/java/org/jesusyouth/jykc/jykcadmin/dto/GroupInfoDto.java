@@ -6,4 +6,6 @@ public interface GroupInfoDto {
     String getPhone_number();
     String getStatus();
     Integer getGid();
+    Integer getGroup_fee();
+    Integer getMemberCount();
 }

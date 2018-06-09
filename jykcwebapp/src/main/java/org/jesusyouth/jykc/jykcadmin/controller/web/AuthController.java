@@ -24,8 +24,8 @@ public class AuthController {
     @PostMapping("/login")
     public String signin(@RequestParam String uid, @RequestParam String name, @RequestParam String email, @RequestParam String image, HttpSession httpSession) {
         User user=usersRepo.findFirstByEmail(email);
-        if(null==user){
-            return "redirect:/login";
+        if(null==user || !user.getRole().contains("zonal_admin")){
+            return "redirect:/403";
         }
         if(StringUtils.isEmpty(user.getUid())){
             user.setUid(uid);

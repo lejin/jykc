@@ -53,10 +53,10 @@
 
         <div class="col-lg-3 col-md-6">
             <div class="social-box twitter">
-                <i class="fa fa-users"></i>
+                <i class="fa fa-user"></i>
                 <ul>
                     <li style="width: 20%">
-                        <strong><span class="count">150</span></strong>
+                        <strong><span th:text="${membersCount}" class="count"></span></strong>
                     </li>
                     <li style="width: 80%">
                         <strong>
@@ -70,14 +70,14 @@
 
         <div class="col-lg-3 col-md-6">
             <div class="social-box google-plus">
-                <i class="ti-medall"></i>
+                <i class="fa fa-users"></i>
                 <ul>
                     <li style="width: 20%">
-                        <strong><span class="count">2</span></strong>
+                        <strong><span th:text="${homeStatus.groupCount}" class="count"> </span></strong>
                     </li>
                     <li style="width: 80%">
                         <strong>
-                            <span>Groups Added</span>
+                            <span>Groups</span>
                         </strong>
                     </li>
                 </ul>
@@ -87,14 +87,14 @@
 
         <div class="col-lg-3 col-md-6">
             <div class="social-box facebook">
-                <i class="fa fa-smile-o"></i>
+                <i class="fa fa-hospital-o"></i>
                 <ul>
                     <li style="width: 20%">
-                        <strong><span class="count">3</span></strong>
+                        <strong><span th:text="${familyCount}" class="count">3</span></strong>
                     </li>
                     <li style="width: 80%">
                         <strong>
-                            <span>Registered members</span>
+                            <span>Families registered</span>
                         </strong>
                     </li>
                 </ul>
