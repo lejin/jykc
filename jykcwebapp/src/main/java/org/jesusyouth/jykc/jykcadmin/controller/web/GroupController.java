@@ -1,6 +1,9 @@
 package org.jesusyouth.jykc.jykcadmin.controller.web;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.jesusyouth.jykc.jykcadmin.Constants.ZoneNames;
+import org.jesusyouth.jykc.jykcadmin.common.GroupMemberUtil;
+import org.jesusyouth.jykc.jykcadmin.dto.MembersWithTeensDto;
 import org.jesusyouth.jykc.jykcadmin.model.GroupInfo;
 import org.jesusyouth.jykc.jykcadmin.model.GroupMembers;
 import org.jesusyouth.jykc.jykcadmin.repository.CommittedMembersRepo;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class GroupController {
@@ -26,6 +30,9 @@ public class GroupController {
 
     @Autowired
     private CommittedMembersRepo committedMembersRepo;
+
+    @Autowired
+    private GroupMemberUtil groupMemberUtil;
 
     @GetMapping("/zonaladmin/group_info")
     public String getGroupInfo(Model model, HttpSession httpSession) {
@@ -76,8 +83,11 @@ public class GroupController {
     @GetMapping("zonaladmin/group_members/{groupID}")
     public String getDetailsOfAGroup(Model model, @PathVariable Integer groupID, HttpSession httpSession) {
         Integer zone = (Integer) httpSession.getAttribute("zone");
-        model.addAttribute("committed_members", committedMembersRepo.findCommittedMemberByZoneIdAndGroupLeaderAndGroupMember(zone, false, false));
-        model.addAttribute("group_members", groupMembersRepo.findGroupMembersByGroupId(groupID));
+        List<MembersWithTeensDto> membersWithTeensDtos=groupMemberUtil.getMembersWithTeensDtos(groupID);
+        if (CollectionUtils.isNotEmpty(membersWithTeensDtos) && !membersWithTeensDtos.get(0).getZone_id().equals(zone)){
+            return "redirect:/403";
+        }
+        model.addAttribute("group_members", membersWithTeensDtos);
         model.addAttribute("group_id", groupID);
         return "group_members";
     }

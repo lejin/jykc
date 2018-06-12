@@ -64,7 +64,8 @@
                                     <th>Group leader Phone</th>
                                     <th>Status</th>
                                     <th>Group Fee</th>
-                                    <th>Number of group members</th>
+                                    <th>No. of members</th>
+                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -75,6 +76,7 @@
                                     <td th:text="${group.getStatus()}">...</td>
                                     <td th:text="${group.getGroup_fee()}">...</td>
                                     <td th:text="${group.getMemberCount()}">...</td>
+                                    <td ><button type="button" class="btn btn-info btn-sm" th:onclick="'javascript:viewGroup(' + ${group.getGid()} + ')'"><i class="fa fa-eye"></i>&nbsp; View</button></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -106,7 +108,14 @@
 <script src="assets/js/lib/data-table/buttons.print.min.js"></script>
 <script src="assets/js/lib/data-table/buttons.colVis.min.js"></script>
 <script src="assets/js/lib/data-table/datatables-init.js"></script>
-
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#bootstrap-data-table-export').DataTable();
+    } );
+    function viewGroup(id) {
+        window.location.href='/zonaladmin/group_members/'+id;
+    }
+</script>
 
 </body>
 </html>

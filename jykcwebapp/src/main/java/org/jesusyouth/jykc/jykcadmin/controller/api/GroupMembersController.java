@@ -1,10 +1,7 @@
 package org.jesusyouth.jykc.jykcadmin.controller.api;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.jesusyouth.jykc.jykcadmin.common.FamilyUtil;
-import org.jesusyouth.jykc.jykcadmin.common.GroupFee;
-import org.jesusyouth.jykc.jykcadmin.common.GroupMemberValidationException;
-import org.jesusyouth.jykc.jykcadmin.common.GroupValidations;
+import org.jesusyouth.jykc.jykcadmin.common.*;
 import org.jesusyouth.jykc.jykcadmin.dto.GroupMemberDTO;
 import org.jesusyouth.jykc.jykcadmin.dto.MembersWithTeensDto;
 import org.jesusyouth.jykc.jykcadmin.model.*;
@@ -54,6 +51,9 @@ public class GroupMembersController {
 
     @Autowired
     private FamilyUtil familyUtil;
+
+    @Autowired
+    private GroupMemberUtil groupMemberUtil;
 
     @PostMapping("/api/group/addmember")
     public GroupMembers addmember(@RequestParam Integer groupId,
@@ -137,38 +137,9 @@ public class GroupMembersController {
 
     @GetMapping("/api/group/members")
     public List<MembersWithTeensDto> getGroupMembers(@RequestParam Integer groupId) {
-        List<GroupMemberDTO> groupMemberDTOS = groupMembersRepo.getAllMembers(groupId);
-        List<Teen> teenList = teensRepo.findAllByTeenGroupIdEquals(groupId);
-        List<MembersWithTeensDto> membersWithTeensDtos = new ArrayList<>();
-        groupMemberDTOS.forEach(e -> {
-            MembersWithTeensDto membersWithTeensDto = new MembersWithTeensDto();
-            try {
-                BeanUtils.copyProperties(membersWithTeensDto, e);
-                membersWithTeensDtos.add(membersWithTeensDto);
-            } catch (Exception ex) {
-                logger.error(ex.getMessage());
-            }
-        });
-        if (!CollectionUtils.isEmpty(teenList)) {
-            teenList.forEach(e -> {
-                MembersWithTeensDto membersWithTeensDto = new MembersWithTeensDto();
-                try {
-                    membersWithTeensDto.setAge(e.getTeenAge());
-                    membersWithTeensDto.setEmail(e.getTeenEmail());
-                    membersWithTeensDto.setGender(e.getTeenGender());
-                    membersWithTeensDto.setPhone_number(e.getTeenPhone());
-                    membersWithTeensDto.setName(e.getTeenName());
-                    membersWithTeensDto.setCategory("student");
-                    membersWithTeensDto.setTeenId(e.getTeenId());
-                    membersWithTeensDtos.add(membersWithTeensDto);
-                } catch (Exception ex) {
-                    logger.error(ex.getMessage());
-                }
-            });
-        }
-
-        return membersWithTeensDtos;
+        return groupMemberUtil.getMembersWithTeensDtos(groupId);
     }
+
 
 
 }
