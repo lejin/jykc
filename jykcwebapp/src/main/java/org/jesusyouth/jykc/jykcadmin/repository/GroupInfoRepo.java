@@ -16,7 +16,7 @@ public interface GroupInfoRepo extends CrudRepository<GroupInfo,Integer> {
     @Query(value = "select * from group_info INNER join committed_members on committed_members.id=group_info.group_leader WHERE group_info.group_zone=?1",nativeQuery = true)
     List<GroupInfoDto> findGroupInfoByZone(Integer zone);
 
-    @Query(value = "select group_info.`group_id`,`group_info`.`gid`,`committed_members`.`name`,`committed_members`.`phone_number`,`group_info`.`status`,`group_info`.`group_fee` ,(select COUNT(*) from `group_members` where `group_members`.`group_id`=`group_info`.`gid`) as membercount from group_info INNER join committed_members on committed_members.id=group_info.group_leader inner join users on users.`member_id`=`group_info`.`group_leader`WHERE group_info.group_zone=11 and users.`approved`=1",nativeQuery = true)
+    @Query(value = "select group_info.`group_id`,`group_info`.`gid`,`committed_members`.`name`,`committed_members`.`phone_number`,`group_info`.`status`,`group_info`.`group_fee` ,(select COUNT(*) from `group_members` where `group_members`.`group_id`=`group_info`.`gid`) as membercount from group_info INNER join committed_members on committed_members.id=group_info.group_leader inner join users on users.`member_id`=`group_info`.`group_leader`WHERE group_info.group_zone=?1 and users.`approved`=1",nativeQuery = true)
     List<GroupInfoDto> findGroupInfoWithMembersCount(Integer zone);
 
     GroupInfo findByGroupLeaderEquals(Integer leaderId);
