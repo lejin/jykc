@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Material Design for Bootstrap fonts and icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+
+    <!-- Material Design for Bootstrap CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+
+    <title>JYKC 2018</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <form action="/religious" method="post" class="form1">
+                <div class="form-group">
+                    <label for="name" class="bmd-label-floating">Name</label>
+                    <input type="text" name="name" class="form-control" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="bmd-label-floating">Email address</label>
+                    <input type="email" name="email" class="form-control" id="email">
+                </div>
+                <div class="form-group">
+                    <label for="age" class="bmd-label-floating">Age</label>
+                    <input type="number" name="age" class="form-control" id="age" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone" class="bmd-label-floating">Phone</label>
+                    <input type="number" name="phone" class="form-control" id="phone" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleSelect1" class="bmd-label-floating">Zone</label>
+                    <select  name="zone" class="form-control" id="exampleSelect1" required>
+                        <option value=""></option>
+                        <option value="1">Neyyattinkara</option>
+                        <option value="2">Trivandrum</option>
+                        <option value="3">Kollam</option>
+                        <option value="4">Punaloor</option>
+                        <option value="5">Changanassery</option>
+                        <option value="6">Kottayam</option>
+                        <option value="7">Kanjirappally</option>
+                        <option value="8">Pala</option>
+                        <option value="9">Alappuzha</option>
+                        <option value="1o">Cherthala</option>
+                        <option value="11">Ernakulam</option>
+                        <option value="12">Idukki</option>
+                        <option value="13">Kattapana</option>
+                        <option value="14">Kothamangalam</option>
+                        <option value="15">Angamaly</option>
+                        <option value="16">Irinjalakuda</option>
+                        <option value="17">Thrissur</option>
+                        <option value="18">Palakkad</option>
+                        <option value="19">Manathavady</option>
+                        <option value="20">Calicut</option>
+                        <option value="21">Thalassery</option>
+                        <option value="22">Kannur</option>
+                        <option value="23">Kasargod</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="responsibility" class="bmd-label-floating">Zone Responsibility</label>
+                    <input type="text" name="responsibility" class="form-control" id="responsibility">
+                </div>
+                <div class="form-group">
+                    <label for="address" class="bmd-label-floating">Address</label>
+                    <textarea class="form-control" id="address" name="address" rows="3"></textarea>
+                </div>
+                <br/>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="gender" id="optionsRadios1" value="male" checked required>
+                        Male
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="gender" id="optionsRadios2" value="female" required>
+                        Female
+                    </label>
+                </div>
+                <br/>
+                <div class="checkbox">
+                    <label>
+                         <input type="checkbox" name="accomadation"> need accomadation
+                    </label>
+                </div>
+                <br/>
+                <button type="submit" onclick="blah();" class="btn btn-primary btn-raised">Submit</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
+<script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('form1');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                    form.submit();
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+</body>
+</html>
