@@ -20,4 +20,16 @@ public class StatusController {
         return "registration_status";
 
     }
+
+    @GetMapping("/group_members_status")
+    public String getGroupMembersStatus(Model model, HttpSession httpSession) {
+        model.addAttribute("status", groupInfoRepo.getGroupMembersCount());
+        Integer members=groupInfoRepo.getGroupMembersCount().stream().map(e->e.getCount()).reduce(Integer::sum).get();
+        Integer family=groupInfoRepo.getFamilyCount();
+        model.addAttribute("members", members);
+        model.addAttribute("family", family);
+        model.addAttribute("total", family+members);
+        return "registration_status_2";
+
+    }
 }
