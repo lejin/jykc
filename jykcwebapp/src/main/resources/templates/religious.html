@@ -16,12 +16,21 @@
 <body>
 <div class="container">
     <div class="row">
-        <div class="col-sm">
+        <div class="col-lg">
             <form action="/religious" method="post" class="form1">
-                <div class="form-group">
-                    <label for="name" class="bmd-label-floating">Name</label>
-                    <input type="text" name="name" class="form-control" id="name" required>
-                </div>
+                    <div class="form-group">
+                        <label for="category" class="bmd-label-floating">Category</label>
+                        <select  name="category" class="form-control" id="category" required>
+                            <option value="">Please Select</option>
+                            <option value="fr">Fr.</option>
+                            <option value="sr">Sr.</option>
+                            <option value="br">Br.</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="name" class="bmd-label-floating">Name</label>
+                        <input type="text" name="name" class="form-control" id="name" required>
+                    </div>
                 <div class="form-group">
                     <label for="email" class="bmd-label-floating">Email address</label>
                     <input type="email" name="email" class="form-control" id="email">
@@ -38,7 +47,7 @@
                 <div class="form-group">
                     <label for="exampleSelect1" class="bmd-label-floating">Zone</label>
                     <select  name="zone" class="form-control" id="exampleSelect1" required>
-                        <option value=""></option>
+                        <option value="">Please Select Zone</option>
                         <option value="1">Neyyattinkara</option>
                         <option value="2">Trivandrum</option>
                         <option value="3">Kollam</option>
@@ -102,6 +111,7 @@
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
@@ -126,6 +136,14 @@
             });
         }, false);
     })();
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+        swal("Religious People", "This is only for Priests , Nuns and Brothers !", "info");
+
+
+    }, false);
+
 </script>
 </body>
 </html>

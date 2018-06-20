@@ -1,6 +1,5 @@
 package org.jesusyouth.jykc.jykcadmin.controller.web;
 
-import org.hibernate.loader.custom.Return;
 import org.jesusyouth.jykc.jykcadmin.model.ReligiousPeople;
 import org.jesusyouth.jykc.jykcadmin.repository.ReligiousPeopleRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +21,10 @@ public class ReligiousController {
 
    @PostMapping("/religious")
    public String addReligious(@RequestParam String name, @RequestParam String email,
-                              @RequestParam String phone, @RequestParam Integer zone,@RequestParam Integer age,
-                              @RequestParam String address,@RequestParam String gender,
-                              @RequestParam(required = false) boolean accomadation,@RequestParam String responsibility) {
+                              @RequestParam String phone, @RequestParam Integer zone, @RequestParam Integer age,
+                              @RequestParam String address, @RequestParam String gender,
+                              @RequestParam(required = false) boolean accomadation, @RequestParam String responsibility,
+                              @RequestParam String category) {
 
        ReligiousPeople religiousPeople=new ReligiousPeople();
        religiousPeople.setAccomadation(accomadation);
@@ -36,6 +36,7 @@ public class ReligiousController {
        religiousPeople.setAge(age);
        religiousPeople.setZone(zone);
        religiousPeople.setZoneResponsibility(responsibility);
+       religiousPeople.setCategory(category);
        religiousPeopleRepo.save(religiousPeople);
        return "redirect:/success";
    }

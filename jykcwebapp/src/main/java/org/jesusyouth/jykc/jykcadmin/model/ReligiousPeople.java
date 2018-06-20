@@ -17,6 +17,7 @@ public class ReligiousPeople {
     private String zoneResponsibility;
     private boolean accomadation;
     private int age;
+    private String category;
 
     public ReligiousPeople() {
     }
@@ -99,5 +100,13 @@ public class ReligiousPeople {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }
