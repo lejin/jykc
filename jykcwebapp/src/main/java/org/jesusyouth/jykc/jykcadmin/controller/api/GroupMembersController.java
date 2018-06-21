@@ -125,9 +125,7 @@ public class GroupMembersController {
             groupInfo=groupFeeComponent.reduceGroupFee(groupInfo, category);
 
             if("family".equals(category)){
-                FamilyInfo familyInfo=familyInfoRepo.getFamilyInfoByFamilyElderIdEquals(userIdInt);
-                familyMemberRepo.deleteFamilymembersByFamilyInfoIdEquals(familyInfo.getFamilyId());
-                familyInfoRepo.delete(familyInfo);
+                familyUtil.deleteFamily(userIdInt);
             }
             groupInfo.setMessage("success");
         }

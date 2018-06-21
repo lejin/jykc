@@ -2,17 +2,18 @@ package org.jesusyouth.jykc.jykcadmin.controller.web;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.jesusyouth.jykc.jykcadmin.Constants.ZoneNames;
+import org.jesusyouth.jykc.jykcadmin.common.FamilyUtil;
+import org.jesusyouth.jykc.jykcadmin.common.GroupFee;
 import org.jesusyouth.jykc.jykcadmin.common.GroupMemberUtil;
 import org.jesusyouth.jykc.jykcadmin.dto.MembersWithTeensDto;
 import org.jesusyouth.jykc.jykcadmin.model.GroupInfo;
 import org.jesusyouth.jykc.jykcadmin.model.GroupMembers;
-import org.jesusyouth.jykc.jykcadmin.repository.CommittedMembersRepo;
-import org.jesusyouth.jykc.jykcadmin.repository.GroupInfoRepo;
-import org.jesusyouth.jykc.jykcadmin.repository.GroupMembersRepo;
-import org.jesusyouth.jykc.jykcadmin.repository.ZoneRepo;
+import org.jesusyouth.jykc.jykcadmin.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -33,6 +34,12 @@ public class GroupController {
 
     @Autowired
     private GroupMemberUtil groupMemberUtil;
+
+    @Autowired
+    private GroupFee groupFee;
+
+    @Autowired
+    private FamilyUtil familyUtil;
 
     @GetMapping("/zonaladmin/group_info")
     public String getGroupInfo(Model model, HttpSession httpSession) {
@@ -104,6 +111,23 @@ public class GroupController {
         committedMembersRepo.updateIsGroupMemberAndAge(1,age,zone,memberID);
 
 
+        return "redirect:/zonaladmin/group_members/".concat(String.valueOf(groupID));
+    }
+
+    @PostMapping("/zonaladmin/group_members/change_category")
+    public String changeCategory(@RequestParam Integer member,@RequestParam Integer groupID,@RequestParam String oldCategory, String category,HttpSession httpSession) {
+        if (!ObjectUtils.nullSafeEquals(category, oldCategory)) {
+            Integer zone = (Integer) httpSession.getAttribute("zone");
+            groupMembersRepo.updateMemberCategory(category,member );
+            groupFee.reduceGroupFee(groupID,oldCategory );
+            groupFee.updateGroupFee(groupID,category );
+            if("family".equals(oldCategory)){
+               familyUtil.deleteFamily(member);
+            }
+            if ("family".equals(category)) {
+                familyUtil.createFamily(groupID, member, zone);
+            }
+        }
         return "redirect:/zonaladmin/group_members/".concat(String.valueOf(groupID));
     }
 

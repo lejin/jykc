@@ -37,6 +37,11 @@ public interface GroupMembersRepo extends CrudRepository<GroupMembers,Integer> {
 
     GroupMembers findFirstByMemberEquals(Integer member);
 
+    @Modifying
+    @Transactional
+    @Query(value = "update group_members set category=?1 where member=?2",nativeQuery = true)
+    void updateMemberCategory(String category,Integer member);
+
     @Transactional
     void deleteGroupMembersByMemberEquals(Integer member);
 }
