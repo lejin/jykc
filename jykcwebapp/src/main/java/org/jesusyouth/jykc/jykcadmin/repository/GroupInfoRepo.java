@@ -31,8 +31,11 @@ public interface GroupInfoRepo extends CrudRepository<GroupInfo,Integer> {
     @Query(value = "select zone.name as 'zone',count(*) as 'count' from group_info inner join zone on group_info.group_zone=zone.id group by group_info.group_zone",nativeQuery = true)
     List<RegistrationStatus> getRegistrationStatus();
 
-    @Query(value = "select zone.name as 'zone', count(*) as 'count' from group_info inner join group_members on group_members.group_id=group_info.gid inner join zone on zone.id=group_info.group_zone group by group_info.group_zone;",nativeQuery = true)
+    @Query(value = "select zone.name as 'zone', count(*) as 'count' from group_info inner join group_members on group_members.group_id=group_info.gid inner join zone on zone.id=group_info.group_zone group by group_info.group_zone",nativeQuery = true)
     List<RegistrationStatus> getGroupMembersCount();
+
+    @Query(value = "select count(*) as 'count' from group_info inner join group_members on group_members.group_id=group_info.gid inner join zone on zone.id=group_info.group_zone group by group_info.group_zone having group_info.group_zone=?1",nativeQuery = true)
+    Integer getGroupMembersCountByZone(Integer zone);
 
     @Query(value = "select count(*) AS 'groupCount' from group_info where group_info.group_zone=?1",nativeQuery = true)
     HomeStatus getTotalGroupsCount(Integer zone);

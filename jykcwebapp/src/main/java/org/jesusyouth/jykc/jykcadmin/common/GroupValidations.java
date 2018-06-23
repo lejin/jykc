@@ -48,12 +48,12 @@ public class GroupValidations {
         Integer familyCount=groupMembersRepo.countAllByGroupIdEqualsAndCategoryEquals(groupId,"family");
         Integer groupMemberCount = groupMembersRepo.countAllByGroupIdEquals(groupId);
 
-        if(groupMemberCount==0 && familyCount>=7){
+        if(groupMemberCount==familyCount && familyCount>=7){
             throw new GroupMemberValidationException("A family only group can have only 7 families");
         }
 
-        if(groupMemberCount!=0 && familyCount>=4 && "family".equals(category)){
-            throw new GroupMemberValidationException("A group can have only 4 families");
+        if(groupMemberCount!=familyCount && familyCount>=4 && "family".equals(category)){
+            throw new GroupMemberValidationException("A mixed group can have only 4 families");
         }
     }
 

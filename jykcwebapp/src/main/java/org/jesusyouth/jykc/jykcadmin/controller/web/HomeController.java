@@ -30,6 +30,7 @@ public class HomeController {
         modelMap.addAttribute("familyCount",familyInfoRepo.countByFamilyZoneIdEquals(zone));
         modelMap.addAttribute("homeStatus",groupInfo.getTotalGroupsCount(zone));
         modelMap.addAttribute("membersCount",committedMembersRepo.countCommittedMemberByZoneIdEquals(zone));
+        modelMap.addAttribute("groupMembersCount",groupInfo.getGroupMembersCountByZone(zone));
         return "home";
     }
 }
