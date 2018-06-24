@@ -1,12 +1,20 @@
 package org.jesusyouth.jykc.jykcadmin.controller.web;
 
 import com.google.gson.Gson;
+import org.jesusyouth.jykc.jykcadmin.model.CommittedMember;
 import org.jesusyouth.jykc.jykcadmin.model.CommittedMembers;
+import org.jesusyouth.jykc.jykcadmin.model.User;
 import org.jesusyouth.jykc.jykcadmin.repository.CommittedMembersRepo;
+import org.jesusyouth.jykc.jykcadmin.repository.UsersRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class CommittedMembersController {
@@ -14,9 +22,40 @@ public class CommittedMembersController {
     @Autowired
     private CommittedMembersRepo committedMembersRepo;
 
+    @Autowired
+    private UsersRepo usersRepo;
+
     @GetMapping("/zonaladmin/committed_members")
     public String getCommittedMembers(Model model){
         model.addAttribute("committed_members",committedMembersRepo.findAll());
         return "committed_members";
+    }
+
+    @PostMapping("/zonaladmin/committed_members/updateinfo")
+    public String putCommittedMembers(@RequestParam Integer member, @RequestParam String mail, @RequestParam String phone,
+                                      @RequestParam String oldMail, @RequestParam String oldPhone) {
+        User newUser = usersRepo.findFirstByEmailLikeOrPhoneLike(mail, phone);
+        User oldUser = usersRepo.findFirstByEmailLikeOrPhoneLike(oldMail, oldPhone);
+        if (isUserEditable(newUser) && isUserEditable(oldUser)) {
+            CommittedMember committedMember = committedMembersRepo.findFirstCommittedMemberByEmailLikeOrPhoneLike(mail, phone);
+            if (committedMember == null || committedMember.getId().equals(member)) {
+                committedMembersRepo.updateMemberInfo(mail, phone, member);
+                deleUser(newUser);
+                deleUser(oldUser);
+                return "redirect:/zonaladmin/committed_members?success=true";
+            }
+            return "redirect:/zonaladmin/committed_members?message=exist";
+        }
+        return "redirect:/zonaladmin/committed_members?success=false";
+    }
+
+    private void deleUser(User newUser) {
+        if (null != newUser) {
+            usersRepo.delete(newUser);
+        }
+    }
+
+    private boolean isUserEditable(User user) {
+        return user==null || user.getRole().trim().equals("user");
     }
 }

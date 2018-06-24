@@ -170,7 +170,29 @@
     <div class="content mt-3">
         <div class="animated fadeIn">
             <div class="row">
-
+                <div class="col-md-12">
+                    <div th:if="${(param.success != null) and (param.success[0] == 'true')}" class="sufee-alert alert with-close alert-success alert-dismissible fade show">
+                        <span class="badge badge-pill badge-success">Success</span>
+                        Member info updated successfully
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div th:if="${(param.message != null) and (param.message[0] == 'exist')}" class="sufee-alert alert with-close alert-warning alert-dismissible fade show">
+                        <span class="badge badge-pill badge-warning">Failed</span>
+                        Updation failed , a member with same info already exist.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div th:if="${(param.success != null) and (param.success[0] == 'false')}" class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                        <span class="badge badge-pill badge-danger">Failed</span>
+                        A member with same info already logged into JYKC app , and you are not authorised to update.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                </div>
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
@@ -184,7 +206,7 @@
                                     <th>Email</th>
                                     <th>Phone</th>
                                     <th>Gender</th>
-                                    <!--<th>Action</th>-->
+                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -193,7 +215,7 @@
                                     <td th:text="${member.getEmail()}">...</td>
                                     <td th:text="${member.getPhone()}">...</td>
                                     <td th:text="${member.getGender()}">...</td>
-                                    <!--<td ><button type="button" class="btn btn-primary btn-sm" th:onclick="'javascript:editmember(' + ${member.getId()} + ',\''+${member.getPhone()}+'\',\''+${member.getEmail()}+'\')'"><i class="fa fa-edit"></i>&nbsp; Edit</button></td>-->
+                                    <td ><button type="button" class="btn btn-primary btn-sm" th:onclick="'javascript:editmember(' + ${member.getId()} + ',\''+${member.getPhone()}+'\',\''+${member.getEmail()}+'\')'" data-toggle="modal" data-target="#smallmodal"><i class="fa fa-edit"></i>&nbsp; Edit</button></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -209,7 +231,7 @@
 <div class="modal fade" id="smallmodal" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
-            <form id="leaderForm" class="form-horizontal" th:action="@{/zonaladmin/group_members/change_category}" method="post">
+            <form id="leaderForm" class="form-horizontal" th:action="@{/zonaladmin/committed_members/updateinfo}" method="post">
                 <div class="modal-header">
                     <h5 class="modal-title" id="smallmodalLabel">Edit Member</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -227,7 +249,7 @@
                     </div>
                     <div class="row form-group">
                         <div class="col col-md-3"><label for="phone" class=" form-control-label">Phone</label></div>
-                        <div class="col-12 col-md-9"><input type="number" id="phone" name="phone" placeholder="mail" class="form-control"></div>
+                        <div class="col-12 col-md-9"><input type="text" id="phone" name="phone" placeholder="phone number" class="form-control"></div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -266,6 +288,8 @@
         $('#member').val(id);
         $('#oldPhone').val(phone);
         $('#oldMail').val(email);
+        $('#mail').val(email);
+        $('#phone').val(phone);
     }
     $(window).load(function(){
         // PAGE IS FULLY LOADED

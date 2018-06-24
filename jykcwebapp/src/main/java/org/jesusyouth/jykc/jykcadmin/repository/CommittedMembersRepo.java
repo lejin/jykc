@@ -36,6 +36,11 @@ public interface CommittedMembersRepo extends CrudRepository<CommittedMember,Int
     @Query(value = "update committed_members set is_group_member=?1, age=?2, zone_id=?3 where id=?4",nativeQuery = true)
     void updateIsGroupMemberAndAge(Integer isGroupMember,Integer age,Integer zoneId,Integer memberID);
 
+    @Modifying
+    @Transactional
+    @Query(value = "update `committed_members` set `email`=?1,`phone_number`=?2 where id=?3",nativeQuery = true)
+    void updateMemberInfo(String mail,String phone,Integer memberID);
+
     CommittedMember findFirstByIdEquals(Integer id);
 
     Integer countCommittedMemberByZoneIdEquals(Integer zoneId);
