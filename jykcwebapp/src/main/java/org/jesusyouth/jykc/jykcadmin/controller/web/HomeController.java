@@ -28,9 +28,9 @@ public class HomeController {
     public String home(Model modelMap,HttpSession httpSession){
         Integer zone = (Integer) httpSession.getAttribute("zone");
         modelMap.addAttribute("familyCount",familyInfoRepo.countByFamilyZoneIdEquals(zone));
-        modelMap.addAttribute("homeStatus",groupInfo.getTotalGroupsCount(zone));
+        modelMap.addAttribute("groupCount",groupInfo.getTotalGroupsCount(zone)-groupInfo.getNotApprovedGroupLeadersCount(zone));
         modelMap.addAttribute("membersCount",committedMembersRepo.countCommittedMemberByZoneIdEquals(zone));
-        modelMap.addAttribute("groupMembersCount",groupInfo.getGroupMembersCountByZone(zone));
+        modelMap.addAttribute("groupMembersCount",groupInfo.getGroupMembersCountByZone(zone)-groupInfo.getNotApprovedGroupLeadersCount(zone));
         return "home";
     }
 }

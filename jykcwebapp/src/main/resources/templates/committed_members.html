@@ -184,7 +184,7 @@
                                     <th>Email</th>
                                     <th>Phone</th>
                                     <th>Gender</th>
-                                    <th>Action</th>
+                                    <!--<th>Action</th>-->
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -193,7 +193,7 @@
                                     <td th:text="${member.getEmail()}">...</td>
                                     <td th:text="${member.getPhone()}">...</td>
                                     <td th:text="${member.getGender()}">...</td>
-                                    <td ><button type="button" class="btn btn-primary btn-sm" th:onclick="'javascript:editmember(' + ${member.getId()} + ',\''+${member.getPhone()}+'\',\''+${member.getEmail()}+'\')'"><i class="fa fa-edit"></i>&nbsp; Edit</button></td>
+                                    <!--<td ><button type="button" class="btn btn-primary btn-sm" th:onclick="'javascript:editmember(' + ${member.getId()} + ',\''+${member.getPhone()}+'\',\''+${member.getEmail()}+'\')'"><i class="fa fa-edit"></i>&nbsp; Edit</button></td>-->
                                 </tr>
                                 </tbody>
                             </table>
