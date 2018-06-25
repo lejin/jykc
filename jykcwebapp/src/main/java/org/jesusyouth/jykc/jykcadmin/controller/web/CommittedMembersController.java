@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +27,9 @@ public class CommittedMembersController {
     private UsersRepo usersRepo;
 
     @GetMapping("/zonaladmin/committed_members")
-    public String getCommittedMembers(Model model){
-        model.addAttribute("committed_members",committedMembersRepo.findAll());
+    public String getCommittedMembers(Model model,HttpSession httpSession){
+        Integer zone = (Integer) httpSession.getAttribute("zone");
+        model.addAttribute("committed_members",committedMembersRepo.findAllByZoneIdEquals(zone));
         return "committed_members";
     }
 

@@ -21,6 +21,8 @@ public interface CommittedMembersRepo extends CrudRepository<CommittedMember,Int
     @Query(value = "update committed_members set is_group_member=?1 where id=?2",nativeQuery = true)
     void updateIsGroupMember(Integer isGroupMember,Integer memberID);
 
+    List<CommittedMember> findAllByZoneIdEquals(Integer zoneId);
+
     @Modifying
     @Transactional
     @Query(value = "update committed_members set is_group_leader=?1 where id=?2",nativeQuery = true)
