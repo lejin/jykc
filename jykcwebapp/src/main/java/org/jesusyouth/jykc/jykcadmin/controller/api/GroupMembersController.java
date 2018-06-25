@@ -67,6 +67,7 @@ public class GroupMembersController {
             //groupValidations.validateGroupMemberAge(category, age);
             groupValidations.validateGroupMembersCount(groupId);
             groupValidations.validateFamilyCount(groupId,category);
+            groupValidations.validMember(userId);
         } catch (GroupMemberValidationException e) {
             logger.error("XXXXXXX   validation error"+e.getMessage());
             GroupMembers groupMembers = new GroupMembers();
@@ -115,6 +116,7 @@ public class GroupMembersController {
             groupInfo = groupInfoRepo.findFirstByGidEquals(groupId);
             if(null!=groupInfo && groupInfo.getGroupLeader().equals(userIdInt)){
                 groupInfo.setMessage("can't delete group leader");
+                logger.error("can't delete group leader");
                 return groupInfo;
             }
 

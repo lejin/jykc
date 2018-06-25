@@ -1,5 +1,6 @@
 package org.jesusyouth.jykc.jykcadmin.common;
 
+import org.jesusyouth.jykc.jykcadmin.model.GroupMembers;
 import org.jesusyouth.jykc.jykcadmin.repository.GroupMembersRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -57,5 +58,11 @@ public class GroupValidations {
         }
     }
 
+    public void validMember(Integer member) throws GroupMemberValidationException{
+        GroupMembers groupMembers=groupMembersRepo.findFirstByMemberEquals(member);
+        if(null!=groupMembers){
+            throw new GroupMemberValidationException("Already a member in another group");
+        }
+    }
 
 }

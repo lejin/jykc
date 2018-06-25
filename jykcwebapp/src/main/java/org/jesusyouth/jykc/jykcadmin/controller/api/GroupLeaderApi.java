@@ -54,11 +54,14 @@ public class GroupLeaderApi {
                                       @RequestParam Integer userId){
 
         User user=usersRepo.findByAuthId(authId);
-        if(null == user){
-            return new AuthUser(-1,-1,"user",-1);
+        if(null == user || user.getUserId()==null){
+            return new AuthUser();
 
         }
-
+        CommittedMember committedMember=committedMembersRepo.findFirstByIdEquals(user.getUserId());
+        if(null == committedMember || committedMember.isGroupMember()){
+            return new AuthUser();
+        }
         GroupInfo groupInfo = new GroupInfo();
         groupInfo.setGroupLeader(userId);
         groupInfo.setGroupZone(zone);
