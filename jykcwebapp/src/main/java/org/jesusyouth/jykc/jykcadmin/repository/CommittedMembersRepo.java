@@ -1,6 +1,7 @@
 package org.jesusyouth.jykc.jykcadmin.repository;
 
 import org.jesusyouth.jykc.jykcadmin.dto.HomeStatus;
+import org.jesusyouth.jykc.jykcadmin.dto.MemberDto;
 import org.jesusyouth.jykc.jykcadmin.model.CommittedMember;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,6 +23,12 @@ public interface CommittedMembersRepo extends CrudRepository<CommittedMember,Int
     void updateIsGroupMember(Integer isGroupMember,Integer memberID);
 
     List<CommittedMember> findAllByZoneIdEquals(Integer zoneId);
+
+    @Query(value = "select name,email,phone_number,is_group_leader,is_group_member from `committed_members` where (`is_group_leader`=1 or `is_group_member`=1) and `zone_id`=?1",nativeQuery = true)
+    List<MemberDto> registeredMembers(Integer zoneId);
+
+    @Query(value = "select name,email,phone_number,is_group_leader,is_group_member from `committed_members` where `is_group_leader`=0 and `is_group_member`=0 and `zone_id`=?1",nativeQuery = true)
+    List<MemberDto> NotRegisteredMembers(Integer zoneId);
 
     @Modifying
     @Transactional

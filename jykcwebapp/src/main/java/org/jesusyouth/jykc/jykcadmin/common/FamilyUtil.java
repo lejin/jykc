@@ -27,7 +27,9 @@ public class FamilyUtil {
 
     public void deleteFamily(Integer userIdInt) {
         FamilyInfo familyInfo=familyInfoRepo.getFamilyInfoByFamilyElderIdEquals(userIdInt);
-        familyMemberRepo.deleteFamilymembersByFamilyInfoIdEquals(familyInfo.getFamilyId());
-        familyInfoRepo.delete(familyInfo);
+        if (null!=familyInfo){
+            familyMemberRepo.deleteFamilymembersByFamilyInfoIdEquals(familyInfo.getFamilyId());
+            familyInfoRepo.delete(familyInfo);
+        }
     }
 }

@@ -33,6 +33,20 @@ public class CommittedMembersController {
         return "committed_members";
     }
 
+    @GetMapping("/zonaladmin/registered")
+    public String getRegisteredMembers(Model model,HttpSession httpSession){
+        Integer zone = (Integer) httpSession.getAttribute("zone");
+        model.addAttribute("committed_members",committedMembersRepo.registeredMembers(zone));
+        return "registered";
+    }
+
+    @GetMapping("/zonaladmin/not_registered")
+    public String getNotRegisteredMembers(Model model,HttpSession httpSession){
+        Integer zone = (Integer) httpSession.getAttribute("zone");
+        model.addAttribute("committed_members",committedMembersRepo.NotRegisteredMembers(zone));
+        return "not_registered";
+    }
+
     @PostMapping("/zonaladmin/committed_members/updateinfo")
     public String putCommittedMembers(@RequestParam Integer member, @RequestParam String mail, @RequestParam String phone,
                                       @RequestParam String oldMail, @RequestParam String oldPhone) {

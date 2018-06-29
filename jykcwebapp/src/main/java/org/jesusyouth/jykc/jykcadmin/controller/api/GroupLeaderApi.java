@@ -150,6 +150,7 @@ public class GroupLeaderApi {
             if("group_leader".equals(user.getRole())){
                 user.setRole("member");
             }
+            familyUtil.deleteFamily(user.getUserId());
             usersRepo.save(user);
         }catch (Exception e){
             logger.error("XXXXXXX   validation error"+e.getMessage());
