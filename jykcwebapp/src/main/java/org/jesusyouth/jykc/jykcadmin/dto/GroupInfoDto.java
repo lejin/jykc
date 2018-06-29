@@ -8,4 +8,6 @@ public interface GroupInfoDto {
     Integer getGid();
     Integer getGroup_fee();
     Integer getMemberCount();
+    String getZoneName();
+    String getZoneId();
 }

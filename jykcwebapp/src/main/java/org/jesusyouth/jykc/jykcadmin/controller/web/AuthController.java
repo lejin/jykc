@@ -24,7 +24,7 @@ public class AuthController {
     @PostMapping("/login")
     public String signin(@RequestParam String uid, @RequestParam String name, @RequestParam String email, @RequestParam String image, HttpSession httpSession) {
         User user=usersRepo.findFirstByEmail(email);
-        if(null==user || !user.getRole().contains("zonal_admin")){
+        if(null==user && !user.getRole().contains("zonal_admin") && !user.getRole().contains("web_admin")){
             return "redirect:/403";
         }
         if(StringUtils.isEmpty(user.getUid())){
@@ -36,6 +36,10 @@ public class AuthController {
         httpSession.setAttribute("role",user.getRole());
         httpSession.setAttribute("zone",user.getZone());
         httpSession.setAttribute("image",image);
+        httpSession.setAttribute("email",email);
+        if(user.getRole().contains("web_admin")){
+            return "redirect:/admin/home";
+        }
         return "redirect:/zonaladmin/home";
     }
 

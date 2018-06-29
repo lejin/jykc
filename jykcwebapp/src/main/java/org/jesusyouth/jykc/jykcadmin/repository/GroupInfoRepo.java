@@ -20,6 +20,9 @@ public interface GroupInfoRepo extends CrudRepository<GroupInfo,Integer> {
     @Query(value = "select group_info.`group_id`,`group_info`.`gid`,`committed_members`.`name`,`committed_members`.`phone_number`,`group_info`.`status`,`group_info`.`group_fee` ,(select COUNT(*) from `group_members` where `group_members`.`group_id`=`group_info`.`gid`) as membercount from group_info INNER join committed_members on committed_members.id=group_info.group_leader inner join users on users.`member_id`=`group_info`.`group_leader`WHERE group_info.group_zone=?1 and users.`approved`=1",nativeQuery = true)
     List<GroupInfoDto> findGroupInfoWithMembersCount(Integer zone);
 
+    @Query(value = "select group_info.`group_id`,`group_info`.`gid`,`committed_members`.`name`,`committed_members`.`phone_number`,`group_info`.`status`,`group_info`.`group_fee` ,(select COUNT(*) from `group_members` where `group_members`.`group_id`=`group_info`.`gid`) as membercount,zone.`name` as 'zoneName',zone.`id` as 'zoneId' from group_info INNER join committed_members on committed_members.id=group_info.group_leader inner join users on users.`member_id`=`group_info`.`group_leader`inner join zone on zone.`id`=`group_info`.`group_zone`WHERE users.`approved`=1",nativeQuery = true)
+    List<GroupInfoDto> findGroupInfoWithMembersCount();
+
     GroupInfo findByGroupLeaderEquals(Integer leaderId);
 
     GroupInfo findFirstByGidEquals(Integer groupId);
@@ -41,8 +44,14 @@ public interface GroupInfoRepo extends CrudRepository<GroupInfo,Integer> {
     @Query(value = "select count(*) as 'count' from group_info inner join group_members on group_members.group_id=group_info.gid where group_info.group_zone=?1",nativeQuery = true)
     Integer getGroupMembersCountByZone(Integer zone);
 
+    @Query(value = "select count(*) as 'count' from group_info inner join group_members on group_members.group_id=group_info.gid ",nativeQuery = true)
+    Integer getGroupMembersCountAllZone();
+
     @Query(value = "select count(*) from users where role like '%group_leader%' and `approved`=0 and zone=?1",nativeQuery = true)
     Integer getNotApprovedGroupLeadersCount(Integer zone);
+
+    @Query(value = "select count(*) from users where role like '%group_leader%' and `approved`=0",nativeQuery = true)
+    Integer getNotApprovedGroupLeadersCountAllZone();
 
     @Query(value = "select count(*) AS 'groupCount' from group_info where group_info.group_zone=?1",nativeQuery = true)
     Integer getTotalGroupsCount(Integer zone);
