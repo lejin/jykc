@@ -83,7 +83,7 @@
                                                 th:onclick="'javascript:viewGroup(' + ${group.getGid()} + ')'"><i
                                                 class="fa fa-eye"></i>&nbsp; View
                                         </button>&nbsp;
-                                        <button th:if="${(group.getStatus() != null) and (group.getStatus() != 'Payment complete')}" type="button" class="btn btn-primary btn-sm"
+                                        <button th:if="${(group.getStatus() != null) and (group.getStatus() != 'Payment received')}" type="button" class="btn btn-primary btn-sm"
                                                 th:onclick="'javascript:makePayment('+${group.getGid()}+','+${group.getZoneId()}+')'"
                                                 data-toggle="modal" data-target="#smallmodal"><i
                                                 class="fa fa-inr"></i>&nbsp; Fee

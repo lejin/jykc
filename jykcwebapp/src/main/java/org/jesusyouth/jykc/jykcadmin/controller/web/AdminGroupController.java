@@ -69,7 +69,7 @@ public class AdminGroupController {
         paymentRepo.save(payment);
 
         GroupInfo groupInfo=groupInfoRepo.findFirstByGidEquals(group);
-        groupInfo.setStatus("Payment complete");
+        groupInfo.setStatus("Payment received");
         groupInfoRepo.save(groupInfo);
         return "redirect:/admin/group_info";
     }
