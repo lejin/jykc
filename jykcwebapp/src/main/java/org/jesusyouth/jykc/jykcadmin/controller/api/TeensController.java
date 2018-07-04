@@ -39,6 +39,9 @@ public class TeensController {
     @Autowired
     private GroupFee groupFee;
 
+    @Autowired
+    private GroupFee groupFeeComponent;
+
     @PostMapping("/api/teen/add")
     public GroupMembers addTeen(@RequestParam Integer groupId,
                                 @RequestParam boolean accomadation,
@@ -82,8 +85,12 @@ public class TeensController {
 
     @PostMapping("/api/teen/remove")
     public String removemember(@RequestParam Integer teenId) {
+        Teen teen=teensRepo.findById(teenId).get();
         groupMembersRepo.deleteGroupMembersByTeenIdEquals(teenId);
         teensRepo.deleteTeenByTeenIdEquals(teenId);
+        if(teen!=null){
+            groupFeeComponent.reduceGroupFee(teen.getTeenGroupId(), "student");
+        }
         return "success";
     }
 
