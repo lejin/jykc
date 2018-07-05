@@ -18,10 +18,10 @@
         dom: 'lBfrtip',
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
         buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
+            'copy', 'excel', 'pdf', 'print'
         ]
     });
-	
+
 	$('#row-select').DataTable( {
 			initComplete: function () {
 				this.api().columns().every( function () {
@@ -32,12 +32,12 @@
 							var val = $.fn.dataTable.util.escapeRegex(
 								$(this).val()
 							);
-	 
+
 							column
 								.search( val ? '^'+val+'$' : '', true, false )
 								.draw();
 						} );
-	 
+
 					column.data().unique().sort().each( function ( d, j ) {
 						select.append( '<option value="'+d+'">'+d+'</option>' )
 					} );

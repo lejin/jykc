@@ -118,8 +118,6 @@ public class StatiticsController {
                 other.setGroupCode(groupInfoMap.get(e.getGroupId()).getGroupID());
                 other.setHighLight(true);
                 otherList.add(other);
-            }else {
-                System.out.println("problematic !!!!!!!!!   "+e.getUid()+"   group id = "+e.getGroupId());
             }
         });
         model.addAttribute("others",otherList);

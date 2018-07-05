@@ -76,14 +76,21 @@
                                     <td th:text="${group.getStatus()}">...</td>
                                     <td th:text="${group.getGroup_fee()}">...</td>
                                     <td th:text="${group.getMemberCount()}">...</td>
-                                    <td ><button type="button" class="btn btn-info btn-sm" th:onclick="'javascript:viewGroup(' + ${group.getGid()} + ')'"><i class="fa fa-eye"></i>&nbsp; View</button></td>
+                                    <td >
+                                        <button type="button" class="btn btn-info btn-sm" th:onclick="'javascript:viewGroup(' + ${group.getGid()} + ')'"><i class="fa fa-eye"></i>&nbsp; View</button>
+                                        <br><br>
+                                        <button th:if="${(group.getStatus() != null) and (group.getStatus() == 'submitted')}" type="button" class="btn btn-success btn-sm" th:onclick="'javascript:unsubmitGroup(' + ${group.getGid()} + ')'"><i class="fa fa-unlock"></i>&nbsp; Unsubmit</button>
+
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-
+                <form id="unsubmitForm" class="form-horizontal" th:action="@{/zonaladmin/unsubmit}" method="post">
+                    <input type="hidden" name="groupID" id="groupID">
+                </form>
 
             </div>
         </div><!-- .animated -->
@@ -114,6 +121,11 @@
     } );
     function viewGroup(id) {
         window.location.href='/zonaladmin/group_members/'+id;
+    }
+
+    function unsubmitGroup(id) {
+       $('#groupID').val(id);
+       $('#unsubmitForm').submit();
     }
 </script>
 

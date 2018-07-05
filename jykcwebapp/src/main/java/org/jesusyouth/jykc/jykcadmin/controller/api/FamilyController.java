@@ -3,6 +3,7 @@ package org.jesusyouth.jykc.jykcadmin.controller.api;
 import org.jesusyouth.jykc.jykcadmin.common.GroupValidations;
 import org.jesusyouth.jykc.jykcadmin.dto.FamilyDTO;
 import org.jesusyouth.jykc.jykcadmin.dto.FamilyMembers;
+import org.jesusyouth.jykc.jykcadmin.model.ApprovalResponse;
 import org.jesusyouth.jykc.jykcadmin.model.FamilyInfo;
 import org.jesusyouth.jykc.jykcadmin.model.Familymember;
 import org.jesusyouth.jykc.jykcadmin.repository.FamilyInfoRepo;
@@ -80,6 +81,22 @@ public class FamilyController {
         }
         familyDTO.setFamilyMembers(familyMembers);
         return familyDTO;
+    }
+
+    @PostMapping("/api/family/removemember")
+    public ApprovalResponse removeMember(@RequestParam Integer familyMemberId){
+        try {
+            Familymember familymember=familyMemberRepo.findById(familyMemberId).get();
+            familyMemberRepo.delete(familymember);
+            ApprovalResponse approvalResponse=new ApprovalResponse();
+            approvalResponse.setMessage("success");
+            return approvalResponse;
+        }catch (Exception e){
+            logger.error("error "+e.getMessage());
+        }
+        ApprovalResponse approvalResponse=new ApprovalResponse();
+        approvalResponse.setMessage("error");
+        return approvalResponse;
     }
 
 }
