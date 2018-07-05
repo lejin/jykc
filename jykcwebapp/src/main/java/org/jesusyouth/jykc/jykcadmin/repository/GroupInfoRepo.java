@@ -32,6 +32,11 @@ public interface GroupInfoRepo extends CrudRepository<GroupInfo,Integer> {
     @Query(value = "update group_info set status='submitted',group_is_editable=0 where gid=?1",nativeQuery = true)
     void updateGroupInfoById(Integer groupId);
 
+    @Modifying
+    @Transactional
+    @Query(value = "update group_info set status='pending',group_is_editable=1 where gid=?1",nativeQuery = true)
+    void unsubmit(Integer groupId);
+
     @Query(value = "select zone.name as 'zone',count(*) as 'count' from group_info inner join zone on group_info.group_zone=zone.id group by group_info.group_zone",nativeQuery = true)
     List<RegistrationStatus> getRegistrationStatus();
 

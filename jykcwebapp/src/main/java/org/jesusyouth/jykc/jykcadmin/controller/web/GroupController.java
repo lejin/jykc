@@ -145,10 +145,7 @@ public class GroupController {
 
     @PostMapping("/zonaladmin/unsubmit")
     public String unsubmit(@RequestParam Integer groupID){
-        GroupInfo groupInfo=groupInfoRepo.findFirstByGidEquals(groupID);
-        groupInfo.setEditable(true);
-        groupInfo.setStatus("pending");
-        groupInfoRepo.save(groupInfo);
+        groupInfoRepo.unsubmit(groupID);
         return "redirect:/zonaladmin/group_info";
     }
 }
