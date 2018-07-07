@@ -20,12 +20,17 @@ public class GroupValidations {
 
     public void validateGroupCountForSubmission(Integer groupId) throws GroupMemberValidationException {
         Integer groupMemberCount = groupMembersRepo.countAllByGroupIdEquals(groupId);
-        if (groupMemberCount < 6) {
+
+        if (groupMemberCount < 6 && !IsFamilyOnlyGroup(groupId)) {
             throw new GroupMemberValidationException("Group should have 6 to 10 members !");
         }
         //for final submission so value can be 10
         if (groupMemberCount >10) {
             throw new GroupMemberValidationException("Group can have only 6 to 10 members !");
+        }
+
+        if (groupMemberCount < 4 && IsFamilyOnlyGroup(groupId)) {
+            throw new GroupMemberValidationException("Family only group should have minimum 4 families !");
         }
     }
 
@@ -46,8 +51,8 @@ public class GroupValidations {
     }
 
     public void validateFamilyCount(Integer groupId,String category) throws GroupMemberValidationException {
-        Integer familyCount=groupMembersRepo.countAllByGroupIdEqualsAndCategoryEquals(groupId,"family");
-        Integer groupMemberCount = groupMembersRepo.countAllByGroupIdEquals(groupId);
+        Integer familyCount = getFamilyMemberCount(groupId);
+        Integer groupMemberCount = getGroupmemberCount(groupId);
 
         if(groupMemberCount==familyCount && familyCount>=7){
             throw new GroupMemberValidationException("A family only group can have only 7 families");
@@ -56,6 +61,22 @@ public class GroupValidations {
         if(groupMemberCount!=familyCount && familyCount>=4 && "family".equals(category)){
             throw new GroupMemberValidationException("A mixed group can have only 4 families");
         }
+    }
+
+    private Integer getGroupmemberCount(Integer groupId) {
+        return groupMembersRepo.countAllByGroupIdEquals(groupId);
+    }
+
+    private Integer getFamilyMemberCount(Integer groupId) {
+        return groupMembersRepo.countAllByGroupIdEqualsAndCategoryEquals(groupId,"family");
+    }
+
+    private boolean IsFamilyOnlyGroup(Integer groupId){
+        if(getGroupmemberCount(groupId)== getFamilyMemberCount(groupId)){
+            return true;
+        }
+
+        return false;
     }
 
     public void validMember(Integer member) throws GroupMemberValidationException{
