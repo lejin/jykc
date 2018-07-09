@@ -10,6 +10,7 @@ public class AuthUser implements Serializable {
     private boolean approved;
     private Integer groupId;
     private GroupInfo groupInfo;
+    private boolean vip;
 
     public AuthUser(Integer authid, Integer userid ,String role,Integer groupId) {
         this.authid = authid;
@@ -75,5 +76,13 @@ public class AuthUser implements Serializable {
 
     public void setGroupInfo(GroupInfo groupInfo) {
         this.groupInfo = groupInfo;
+    }
+
+    public boolean isVip() {
+        return vip;
+    }
+
+    public void setVip(boolean vip) {
+        this.vip = vip;
     }
 }

@@ -9,4 +9,5 @@ public interface MemberDto {
     Integer getId();
     boolean getIs_group_leader();
     boolean getIs_group_member();
+    boolean getVip();
 }

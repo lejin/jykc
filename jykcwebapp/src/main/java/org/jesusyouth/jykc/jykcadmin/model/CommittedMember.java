@@ -28,6 +28,7 @@ public class CommittedMember {
     @Column(name = "is_group_member")
     private boolean groupMember;
     private Integer age;
+    private boolean vip;
 
     public CommittedMember() {
     }
@@ -176,4 +177,11 @@ public class CommittedMember {
         this.age = age;
     }
 
+    public boolean isVip() {
+        return vip;
+    }
+
+    public void setVip(boolean vip) {
+        this.vip = vip;
+    }
 }

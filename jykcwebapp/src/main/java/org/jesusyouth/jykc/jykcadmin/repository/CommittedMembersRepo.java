@@ -30,6 +30,9 @@ public interface CommittedMembersRepo extends CrudRepository<CommittedMember,Int
     @Query(value = "select name,email,phone_number,is_group_leader,is_group_member from `committed_members` where `is_group_leader`=0 and `is_group_member`=0 and `zone_id`=?1",nativeQuery = true)
     List<MemberDto> NotRegisteredMembers(Integer zoneId);
 
+    @Query(value = "select id,name,email,phone_number,is_group_leader,is_group_member from `committed_members` where `is_group_leader`=0 and `is_group_member`=0 and `vip`=0",nativeQuery = true)
+    List<MemberDto> NotRegisteredMembers();
+
     @Modifying
     @Transactional
     @Query(value = "update committed_members set is_group_leader=?1 where id=?2",nativeQuery = true)
@@ -53,4 +56,9 @@ public interface CommittedMembersRepo extends CrudRepository<CommittedMember,Int
     CommittedMember findFirstByIdEquals(Integer id);
 
     Integer countCommittedMemberByZoneIdEquals(Integer zoneId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "update `committed_members` set `committed_members`.`vip`=1 where `committed_members`.`id`=?1",nativeQuery = true)
+    void updateVIP(Integer member);
 }

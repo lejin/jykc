@@ -60,6 +60,7 @@ public class Authenticate {
                 newUser.setImage(image);
                 newUser.setName(committedMember.getName());
                 newUser.setUid(googleid);
+                newUser.setVip(committedMember.isVip());
                 usersRepo.save(newUser);
                 return convertFromUser(newUser);
             }
@@ -90,6 +91,7 @@ public class Authenticate {
         authUser.setRole(user.getRole());
         authUser.setZone(user.getZone());
         authUser.setUserid(user.getUserId());
+        authUser.setVip(user.isVip());
         if(null!=user.getRole() && user.getRole().contains("group_leader")){
             GroupInfo groupInfo=groupInfoRepo.findByGroupLeaderEquals(user.getUserId());
             if (null!=groupInfo){

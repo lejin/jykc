@@ -96,12 +96,12 @@ public class GroupLeaderApi {
             user.setRole("group_leader");
         }else if(!StringUtils.isEmpty(role) && role.contains("zonal_admin")){
             role.concat("|group_leader");
-            user.setApproved(true);
             user.setRole(role);
         }
         if ("family".equals(category)) {
             familyUtil.createFamily(groupId, userId, zone);
         }
+        user.setApproved(true);
         user.setPhone(phone);
         user.setZone(zone);
         usersRepo.save(user);

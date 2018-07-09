@@ -27,9 +27,21 @@ public class AdminCommittedMembersController {
     private UsersRepo usersRepo;
 
     @GetMapping("/admin/committed_members")
-    public String getCommittedMembers(Model model,HttpSession httpSession){
+    public String getCommittedMembers(Model model){
         model.addAttribute("committed_members",committedMembersRepo.findAll());
         return "admin_committed_members";
+    }
+
+    @GetMapping("/admin/not_members")
+    public String getNotRegisteredMembers(Model model){
+        model.addAttribute("members",committedMembersRepo.NotRegisteredMembers());
+        return "admin_not_members";
+    }
+
+    @PostMapping("/admin/member/leader")
+    public String setLeader(Integer member){
+        committedMembersRepo.updateVIP(member);
+        return "redirect:/admin/not_members";
     }
 
 }

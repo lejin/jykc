@@ -29,6 +29,9 @@ public class User {
 
     private String phone;
 
+    @Transient
+    private boolean vip;
+
     public Integer getAuthId() {
         return authId;
     }
@@ -107,5 +110,13 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public boolean isVip() {
+        return vip;
+    }
+
+    public void setVip(boolean vip) {
+        this.vip = vip;
     }
 }
