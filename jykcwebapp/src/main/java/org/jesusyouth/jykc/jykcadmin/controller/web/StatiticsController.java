@@ -123,4 +123,87 @@ public class StatiticsController {
         model.addAttribute("others",otherList);
         return "statitics";
     }
+
+    @GetMapping("/admin/statitics")
+    public String getCommittedMembersStatitics(Model model, HttpSession httpSession) {
+        model.addAttribute("teens", statiRepo.getTeensByZone());
+        List<Integer> headList = new ArrayList<>();
+        Map<Integer,CommittedMember> percodeMap=new HashMap<>();
+        Iterable<CommittedMember> committedMembers = committedMembersRepo.findAll();
+        committedMembers.forEach(e->{
+            percodeMap.put(e.getId(),e );
+        });
+        List<FamilyStatiInterface> familyStatiInterfaceList = familyMemberRepo.getall();
+        List<FamilystatiticsDTO> familystatiticsDTOList=new ArrayList<>();
+        familyStatiInterfaceList.forEach(e -> {
+            if(!headList.contains(e.getHead())){
+                FamilystatiticsDTO head=new FamilystatiticsDTO();
+                head.setName(percodeMap.get(e.getHead()).getName());
+                head.setAge(percodeMap.get(e.getHead()).getAge());
+                head.setGender(percodeMap.get(e.getHead()).getGender());
+                head.setRelation("Family Head");
+                head.setPhone(percodeMap.get(e.getHead()).getPhone());
+                head.setGroupLeader(e.getGroupLeader());
+                head.setGroupLeaderPhone(e.getGroupLeaderPhone());
+                head.setGroupCode(e.getGroupCode());
+                familystatiticsDTOList.add(head);
+                headList.add(e.getHead());
+            }
+            FamilystatiticsDTO member=new FamilystatiticsDTO();
+            member.setName(e.getName());
+            member.setAge(e.getAge());
+            member.setGender(e.getGender());
+            member.setRelation(e.getRelation());
+            member.setGroupCode(e.getGroupCode());
+            member.setGroupLeader(e.getGroupLeader());
+            member.setGroupLeaderPhone(e.getGroupLeaderPhone());
+            member.setHeadName(percodeMap.get(e.getHead()).getName());
+            familystatiticsDTOList.add(member);
+        }) ;
+        Iterable<GroupInfo> groupInfoList=groupInfoRepo.findAll();
+        Map<Integer,GroupInfo> groupInfoMap=new HashMap<>();
+        groupInfoList.forEach(e->{
+            groupInfoMap.put(e.getGid(),e );
+        });
+        List<GroupMembers> groupMembersList=groupMembersRepo.getAllByCategoryEquals("family");
+        groupMembersList.forEach(e->{
+            if(!headList.contains(e.getMember())){
+                FamilystatiticsDTO head=new FamilystatiticsDTO();
+                head.setName(percodeMap.get(e.getMember()).getName());
+                head.setAge(percodeMap.get(e.getMember()).getAge());
+                head.setGender(percodeMap.get(e.getMember()).getGender());
+                head.setRelation("Family Head");
+                head.setPhone(percodeMap.get(e.getMember()).getPhone());
+                head.setGroupLeader(percodeMap.get(groupInfoMap.get(e.getGroupId()).getGroupLeader()).getName());
+                head.setGroupLeaderPhone(percodeMap.get(groupInfoMap.get(e.getGroupId()).getGroupLeader()).getPhone());
+                head.setGroupCode(groupInfoMap.get(e.getGroupId()).getGroupID());
+                head.setHighLight(true);
+                familystatiticsDTOList.add(head);
+                headList.add(e.getMember());
+            }
+        });
+        model.addAttribute("families",familystatiticsDTOList);
+
+        List<GroupMembers> others=groupMembersRepo.getAllByCategoryEquals("others");
+        others.addAll(groupMembersRepo.getAllByCategoryEquals("student"));
+        List<StatiticsDto> otherList=new ArrayList<>();
+        List<GroupMembers> withoutTeens=others.stream().filter(e->e.getMember()!=null).collect(Collectors.toList());
+        withoutTeens.forEach(e->{
+            if(groupInfoMap.get(e.getGroupId())!=null){
+                StatiticsDto other=new StatiticsDto();
+                other.setName(percodeMap.get(e.getMember()).getName());
+                other.setAge(percodeMap.get(e.getMember()).getAge());
+                other.setGender(percodeMap.get(e.getMember()).getGender());
+                other.setPhone(percodeMap.get(e.getMember()).getPhone());
+                System.out.println("????????   "+e.getGroupId());
+                other.setGroupLeaderName(percodeMap.get(groupInfoMap.get(e.getGroupId()).getGroupLeader()).getName());
+                other.setGroupLeaderPhone(percodeMap.get(groupInfoMap.get(e.getGroupId()).getGroupLeader()).getPhone());
+                other.setGroupCode(groupInfoMap.get(e.getGroupId()).getGroupID());
+                other.setHighLight(true);
+                otherList.add(other);
+            }
+        });
+        model.addAttribute("others",otherList);
+        return "statitics";
+    }
 }
