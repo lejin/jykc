@@ -43,6 +43,8 @@ public class MembersWithTeensDto implements Serializable {
 
     private Integer teenId;
 
+    private Integer gid;
+
     public Integer getId() {
         return id;
     }
@@ -201,5 +203,13 @@ public class MembersWithTeensDto implements Serializable {
 
     public void setTeenId(Integer teenId) {
         this.teenId = teenId;
+    }
+
+    public Integer getGid() {
+        return gid;
+    }
+
+    public void setGid(Integer gid) {
+        this.gid = gid;
     }
 }

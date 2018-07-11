@@ -112,7 +112,6 @@ public class StatiticsController {
                 other.setAge(percodeMap.get(e.getMember()).getAge());
                 other.setGender(percodeMap.get(e.getMember()).getGender());
                 other.setPhone(percodeMap.get(e.getMember()).getPhone());
-                System.out.println("????????   "+e.getGroupId());
                 other.setGroupLeaderName(percodeMap.get(groupInfoMap.get(e.getGroupId()).getGroupLeader()).getName());
                 other.setGroupLeaderPhone(percodeMap.get(groupInfoMap.get(e.getGroupId()).getGroupLeader()).getPhone());
                 other.setGroupCode(groupInfoMap.get(e.getGroupId()).getGroupID());
@@ -135,6 +134,13 @@ public class StatiticsController {
         });
         List<FamilyStatiInterface> familyStatiInterfaceList = familyMemberRepo.getall();
         List<FamilystatiticsDTO> familystatiticsDTOList=new ArrayList<>();
+        List<GroupMembers> groupMembersList=groupMembersRepo.getAllByCategoryEquals("family");
+        Map<Integer,GroupMembers> familyHeadAccomadationMap=new HashMap<>();
+        groupMembersList.forEach(e->{
+            if(null!=e.getMember()){
+                familyHeadAccomadationMap.put(e.getMember(), e);
+            }
+        });
         familyStatiInterfaceList.forEach(e -> {
             if(!headList.contains(e.getHead())){
                 FamilystatiticsDTO head=new FamilystatiticsDTO();
@@ -146,6 +152,7 @@ public class StatiticsController {
                 head.setGroupLeader(e.getGroupLeader());
                 head.setGroupLeaderPhone(e.getGroupLeaderPhone());
                 head.setGroupCode(e.getGroupCode());
+                head.setAccomadation(familyHeadAccomadationMap.get(e.getHead()).isAccomadation());
                 familystatiticsDTOList.add(head);
                 headList.add(e.getHead());
             }
@@ -165,7 +172,6 @@ public class StatiticsController {
         groupInfoList.forEach(e->{
             groupInfoMap.put(e.getGid(),e );
         });
-        List<GroupMembers> groupMembersList=groupMembersRepo.getAllByCategoryEquals("family");
         groupMembersList.forEach(e->{
             if(!headList.contains(e.getMember())){
                 FamilystatiticsDTO head=new FamilystatiticsDTO();
@@ -177,6 +183,7 @@ public class StatiticsController {
                 head.setGroupLeader(percodeMap.get(groupInfoMap.get(e.getGroupId()).getGroupLeader()).getName());
                 head.setGroupLeaderPhone(percodeMap.get(groupInfoMap.get(e.getGroupId()).getGroupLeader()).getPhone());
                 head.setGroupCode(groupInfoMap.get(e.getGroupId()).getGroupID());
+                head.setAccomadation(familyHeadAccomadationMap.get(e.getMember()).isAccomadation());
                 head.setHighLight(true);
                 familystatiticsDTOList.add(head);
                 headList.add(e.getMember());
@@ -195,7 +202,6 @@ public class StatiticsController {
                 other.setAge(percodeMap.get(e.getMember()).getAge());
                 other.setGender(percodeMap.get(e.getMember()).getGender());
                 other.setPhone(percodeMap.get(e.getMember()).getPhone());
-                System.out.println("????????   "+e.getGroupId());
                 other.setGroupLeaderName(percodeMap.get(groupInfoMap.get(e.getGroupId()).getGroupLeader()).getName());
                 other.setGroupLeaderPhone(percodeMap.get(groupInfoMap.get(e.getGroupId()).getGroupLeader()).getPhone());
                 other.setGroupCode(groupInfoMap.get(e.getGroupId()).getGroupID());

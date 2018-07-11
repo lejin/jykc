@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class AdminGroupController {
@@ -72,6 +74,30 @@ public class AdminGroupController {
         groupInfo.setStatus("Payment received");
         groupInfoRepo.save(groupInfo);
         return "redirect:/admin/group_info";
+    }
+
+    @GetMapping("/admin/payment")
+    public String getDetailsOfAGroup(Model model) {
+        Iterable<Payment> paymentList=paymentRepo.findAll();
+        Iterable<GroupInfo> groupInfoList=groupInfoRepo.findAll();
+        Map<Integer,GroupInfo> groupInfoMap=new HashMap<>();
+        groupInfoList.forEach(e->{
+            groupInfoMap.put(e.getGid(), e);
+        });
+        int total=0;
+        for (Payment payment : paymentList) {
+            total=total+payment.getAmount();
+            payment.setGroupCode(groupInfoMap.get(payment.getGroup()).getGroupID());
+        }
+        model.addAttribute("total", total);
+        model.addAttribute("payment", paymentList);
+        return "admin_payment";
+    }
+
+    @DeleteMapping("/admin/group_members")
+    public String deleteMember(@RequestParam Integer groupID,@RequestParam Integer memberID) {
+       groupMemberUtil.removeGroupMember(groupID,memberID.toString(),null);
+        return "redirect:/admin/group_members/".concat(String.valueOf(groupID));
     }
 
 }

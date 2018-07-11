@@ -4,15 +4,35 @@ import org.jesusyouth.jykc.jykcadmin.model.ReligiousPeople;
 import org.jesusyouth.jykc.jykcadmin.repository.ReligiousPeopleRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+
+
+import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class ReligiousController {
 
     @Autowired
     private ReligiousPeopleRepo religiousPeopleRepo;
+
+    @GetMapping("/zonaladmin/religous_list")
+    public String getAll(Model model, HttpSession httpSession) {
+        Integer zone = (Integer) httpSession.getAttribute("zone");
+        List<ReligiousPeople> religiousPeopleList=religiousPeopleRepo.findAllByZoneEquals(zone);
+        model.addAttribute("religious_people", religiousPeopleList);
+        return "religious_people_list";
+    }
+
+    @DeleteMapping("/zonaladmin/religious_people")
+    public String getAll(Integer memberID) {
+        religiousPeopleRepo.deleteById(memberID);
+        return "redirect:/zonaladmin/religous_list";
+    }
 
    @GetMapping("/religious")
     public String religious(){
@@ -37,7 +57,12 @@ public class ReligiousController {
        religiousPeople.setZone(zone);
        religiousPeople.setZoneResponsibility(responsibility);
        religiousPeople.setCategory(category);
-       religiousPeopleRepo.save(religiousPeople);
+       try {
+           religiousPeopleRepo.save(religiousPeople);
+
+       }catch (Exception e){
+           return "redirect:/religious_error";
+       }
        return "redirect:/success";
    }
     @GetMapping("/success")
@@ -45,4 +70,8 @@ public class ReligiousController {
         return "success.html";
     }
 
+    @GetMapping("/religious_error")
+    public String religiousError(){
+        return "religious_error.html";
+    }
 }

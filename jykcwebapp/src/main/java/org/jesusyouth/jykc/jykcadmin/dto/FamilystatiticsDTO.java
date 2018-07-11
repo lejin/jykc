@@ -15,6 +15,7 @@ public class FamilystatiticsDTO {
     private String phone;
     private String headName;
     private boolean highLight;
+    private boolean accomadation;
 
     public String getName() {
         return name;
@@ -110,5 +111,13 @@ public class FamilystatiticsDTO {
 
     public void setHighLight(boolean highLight) {
         this.highLight = highLight;
+    }
+
+    public boolean isAccomadation() {
+        return accomadation;
+    }
+
+    public void setAccomadation(boolean accomadation) {
+        this.accomadation = accomadation;
     }
 }

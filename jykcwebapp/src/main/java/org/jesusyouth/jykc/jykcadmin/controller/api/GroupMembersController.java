@@ -32,28 +32,17 @@ public class GroupMembersController {
     private GroupMembersRepo groupMembersRepo;
 
     @Autowired
-    private FamilyInfoRepo familyInfoRepo;
-
-    @Autowired
     private GroupValidations groupValidations;
 
-    @Autowired
-    private TeensRepo teensRepo;
-
-    @Autowired
-    private GroupInfoRepo groupInfoRepo;
-
-    @Autowired
-    private GroupFee groupFeeComponent;
-
-    @Autowired
-    private FamilyMemberRepo familyMemberRepo;
 
     @Autowired
     private FamilyUtil familyUtil;
 
     @Autowired
     private GroupMemberUtil groupMemberUtil;
+
+    @Autowired
+    private GroupFee groupFeeComponent;
 
     @PostMapping("/api/group/addmember")
     public GroupMembers addmember(@RequestParam Integer groupId,
@@ -99,41 +88,10 @@ public class GroupMembersController {
                                   @RequestParam(required = false) String userId,
                                   @RequestParam(required = false) String teenId) {
 
-        GroupInfo groupInfo=null;
-
-        if(null!=teenId && !"null".equals(teenId) && !StringUtils.isEmpty(teenId)){
-            Integer teen=Integer.valueOf(StringUtils.trimAllWhitespace(teenId));
-            teensRepo.deleteTeenByTeenIdEquals(teen);
-            groupMembersRepo.deleteGroupMembersByTeenIdEquals(teen);
-            groupInfo=groupFeeComponent.reduceGroupFee(groupId, "student");
-            groupInfo.setMessage("success");
-            return groupInfo;
-        }
-        Integer userIdInt=Integer.valueOf(StringUtils.trimAllWhitespace(userId));
-        GroupMembers groupMembers = groupMembersRepo.findFirstByMemberEquals(userIdInt);
-        if (null != groupMembers) {
-
-            groupInfo = groupInfoRepo.findFirstByGidEquals(groupId);
-            if(null!=groupInfo && groupInfo.getGroupLeader().equals(userIdInt)){
-                groupInfo.setMessage("can't delete group leader");
-                logger.error("can't delete group leader");
-                return groupInfo;
-            }
-
-            String category = groupMembers.getCategory();
-            groupMembersRepo.deleteByMemberEquals(userIdInt,groupId );
-            committedMembersRepo.updateIsGroupMember(0, userIdInt);
-
-            groupInfo=groupFeeComponent.reduceGroupFee(groupInfo, category);
-
-            if("family".equals(category)){
-                familyUtil.deleteFamily(userIdInt);
-            }
-            groupInfo.setMessage("success");
-        }
-//        remove family member
-        return groupInfo;
+        return groupMemberUtil.removeGroupMember(groupId, userId, teenId);
     }
+
+
 
     @GetMapping("/api/group/members")
     public List<MembersWithTeensDto> getGroupMembers(@RequestParam Integer groupId) {

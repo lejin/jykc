@@ -48,9 +48,9 @@ public interface GroupMemberDTO {
 
     public Integer getZone_id();
 
-    public boolean getis_group_leader();
+    public boolean getIs_group_leader();
 
-    public boolean getis_group_member();
+    public boolean getIs_group_member();
 
     public Integer getAge();
 

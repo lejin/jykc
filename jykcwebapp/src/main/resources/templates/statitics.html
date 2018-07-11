@@ -227,6 +227,7 @@
                                     <th>Group leader name</th>
                                     <th>Group leader phone</th>
                                     <th>Group code</th>
+                                    <th>Accomadation</th>
 
                                 </tr>
                                 </thead>
@@ -242,6 +243,7 @@
                                     <td th:text="${family.getGroupLeader()}">...</td>
                                     <td th:text="${family.getGroupLeaderPhone()}">...</td>
                                     <td th:text="${family.getGroupCode()}">...</td>
+                                    <td th:text="${family.isAccomadation()}?'Yes':''">...</td>
 
                                 </tr>
                                 </tbody>

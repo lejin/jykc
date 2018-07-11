@@ -23,6 +23,9 @@ public class Payment {
     @Column(name = "added_by")
     private String addedBy;
 
+    @Transient
+    private String groupCode;
+
     public Integer getId() {
         return id;
     }
@@ -69,5 +72,13 @@ public class Payment {
 
     public void setAddedBy(String addedBy) {
         this.addedBy = addedBy;
+    }
+
+    public String getGroupCode() {
+        return groupCode;
+    }
+
+    public void setGroupCode(String groupCode) {
+        this.groupCode = groupCode;
     }
 }
