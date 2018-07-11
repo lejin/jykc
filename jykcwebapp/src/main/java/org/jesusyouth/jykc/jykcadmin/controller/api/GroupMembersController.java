@@ -88,7 +88,8 @@ public class GroupMembersController {
                                   @RequestParam(required = false) String userId,
                                   @RequestParam(required = false) String teenId) {
 
-        return groupMemberUtil.removeGroupMember(groupId, userId, teenId);
+//        return groupMemberUtil.removeGroupMember(groupId, userId, teenId);
+        return null;
     }
 
 
