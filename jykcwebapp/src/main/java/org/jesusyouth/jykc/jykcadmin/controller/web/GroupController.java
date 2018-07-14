@@ -5,6 +5,7 @@ import org.jesusyouth.jykc.jykcadmin.Constants.ZoneNames;
 import org.jesusyouth.jykc.jykcadmin.common.FamilyUtil;
 import org.jesusyouth.jykc.jykcadmin.common.GroupFee;
 import org.jesusyouth.jykc.jykcadmin.common.GroupMemberUtil;
+import org.jesusyouth.jykc.jykcadmin.dto.GroupMemberDTO;
 import org.jesusyouth.jykc.jykcadmin.dto.MembersWithTeensDto;
 import org.jesusyouth.jykc.jykcadmin.model.GroupInfo;
 import org.jesusyouth.jykc.jykcadmin.model.GroupMembers;
@@ -147,5 +148,23 @@ public class GroupController {
     public String unsubmit(@RequestParam Integer groupID){
         groupInfoRepo.unsubmit(groupID);
         return "redirect:/zonaladmin/group_info";
+    }
+
+    @GetMapping("/incorrectfee")
+    @ResponseBody
+    public String incorrectfee(){
+        StringBuffer br=new StringBuffer();
+        groupInfoRepo.findAll().forEach(e->{
+            List<MembersWithTeensDto> groupMembers=groupMemberUtil.getMembersWithTeensDtos(e.getGid());
+            Integer total=0;
+            for (MembersWithTeensDto groupMember : groupMembers) {
+                int fee =groupFee.calculateFee(groupMember.getCategory());
+                total+=fee;
+            }
+            if(e.getGroupFee().intValue()!=total.intValue()){
+                br.append(">>>>>>??????    "+e.getGroupID()+"  correct value == "+total+"<br>");
+            }
+        });
+        return br.toString();
     }
 }
