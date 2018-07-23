@@ -91,7 +91,10 @@ public class Authenticate {
         authUser.setRole(user.getRole());
         authUser.setZone(user.getZone());
         authUser.setUserid(user.getUserId());
-        authUser.setVip(user.isVip());
+        if(user.getUserId()!=null){
+            CommittedMember committedMember = committedMembersRepo.findById(user.getUserId()).get();
+            authUser.setVip(committedMember.isVip());
+        }
         if(null!=user.getRole() && user.getRole().contains("group_leader")){
             GroupInfo groupInfo=groupInfoRepo.findByGroupLeaderEquals(user.getUserId());
             if (null!=groupInfo){

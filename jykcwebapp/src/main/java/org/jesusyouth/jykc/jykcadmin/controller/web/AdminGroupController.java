@@ -95,7 +95,12 @@ public class AdminGroupController {
     }
 
     @DeleteMapping("/admin/group_members")
-    public String deleteMember(@RequestParam Integer groupID,@RequestParam Integer memberID) {
+    public String deleteMember(@RequestParam Integer groupID,@RequestParam(required = false) Integer memberID,
+                               @RequestParam(required = false) Integer teenID) {
+        if(null!=teenID){
+            groupMemberUtil.removeGroupMember(groupID,null,teenID.toString());
+            return "redirect:/admin/group_members/".concat(String.valueOf(groupID));
+        }
        groupMemberUtil.removeGroupMember(groupID,memberID.toString(),null);
         return "redirect:/admin/group_members/".concat(String.valueOf(groupID));
     }

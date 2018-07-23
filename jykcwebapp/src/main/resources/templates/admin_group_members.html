@@ -70,13 +70,16 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="member : ${group_members}">
-                                    <td th:text="${member.getName()}"><span th:if="${member.isIs_group_leader()}" class="ti-crown"></span>...</td>
+                                    <td th:text="${member.getName()}"><span th:if="${member.isIs_group_leader()}" class="ti ti-crown"></span>...</td>
                                     <td th:text="${member.getEmail()}">...</td>
                                     <td th:text="${member.getPhone_number()}">...</td>
                                     <td th:text="${member.getAge()}">...</td>
                                     <td th:text="${member.getGender()}">...</td>
                                     <td th:text="${member.getCategory()}">...</td>
-                                    <td><button th:if="${member.isIs_group_member()}" type="button" th:onclick="'javascript:removeMember('+${member.getId()}+','+${member.getGid()}+')'" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#smallmodal"><i class="fa fa-times"></i>&nbsp; Delete</button></td>
+                                    <td>
+                                        <button th:if="${member.isIs_group_member()}" type="button" th:onclick="'javascript:removeMember('+${member.getId()}+','+${member.getGid()}+')'" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#smallmodal"><i class="fa fa-times"></i>&nbsp; Delete</button>
+                                        <button th:if="${member.getTeenId() !=null}" type="button" th:onclick="'javascript:removeTeen('+${member.getTeenId()}+','+${member.getGid()}+')'" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#smallmodal"><i class="fa fa-times"></i>&nbsp; Delete</button>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -107,6 +110,7 @@
                 </div>
                 <form id="deleteMemberForm" action="#" th:action="@{/admin/group_members}" th:method="delete">
                     <input type="hidden" id="memberID" name="memberID"/>
+                    <input type="hidden" id="teenID" name="teenID"/>
                     <input type="hidden" id="groupID" name="groupID"/>
                 </form>
 
@@ -146,6 +150,15 @@
     function removeMember(id,gid) {
         $('#memberID').val(id);
         $('#groupID').val(gid);
+        $('#teenID').val(null);
+
+    }
+
+    function removeTeen(id,gid) {
+        $('#teenID').val(id);
+        $('#groupID').val(gid);
+        $('#memberID').val(null);
+
     }
 
     function proceedDelete() {
