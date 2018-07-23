@@ -112,6 +112,7 @@ public class GroupLeaderApi {
         authUser.setGroupId(groupId);
         authUser.setZone(zone);
         authUser.setGroupInfo(groupInfo);
+        authUser.setApproved(true);
         return authUser;
     }
 
