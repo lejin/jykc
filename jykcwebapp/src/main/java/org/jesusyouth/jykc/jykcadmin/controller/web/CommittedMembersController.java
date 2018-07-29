@@ -65,6 +65,20 @@ public class CommittedMembersController {
         return "redirect:/zonaladmin/committed_members?success=false";
     }
 
+    @PostMapping("/zonaladmin/committed_members/updatepersonal")
+    public String putCommittedMembers(@RequestParam Integer member, @RequestParam String name, @RequestParam Integer age,
+                                      @RequestParam String gender) {
+        CommittedMember committedMember = committedMembersRepo.findById(member).get();
+        if (committedMember != null) {
+            committedMember.setName(name);
+            committedMember.setAge(age);
+            committedMember.setGender(gender);
+            usersRepo.updateName(member,name );
+            return "redirect:/zonaladmin/committed_members?success=true";
+        }
+        return "redirect:/zonaladmin/committed_members?success=false";
+    }
+
     private void deleUser(User newUser) {
         if (null != newUser) {
             usersRepo.delete(newUser);

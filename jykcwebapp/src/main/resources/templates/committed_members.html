@@ -196,14 +196,14 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <strong class="card-title">Data Table</strong>
+                            <strong class="card-title">Members</strong>
                         </div>
                         <div class="card-body">
                             <table id="bootstrap-data-table" class="table table-striped table-bordered">
                                 <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Email</th>
+                                    <th>Age</th>
                                     <th>Phone</th>
                                     <th>Gender</th>
                                     <th>Action</th>
@@ -212,10 +212,10 @@
                                 <tbody>
                                 <tr th:each="member : ${committed_members}">
                                     <td th:text="${member.getName()}">...</td>
-                                    <td th:text="${member.getEmail()}">...</td>
+                                    <td th:text="${member.getAge()}">...</td>
                                     <td th:text="${member.getPhone()}">...</td>
                                     <td th:text="${member.getGender()}">...</td>
-                                    <td ><button type="button" class="btn btn-primary btn-sm" th:onclick="'javascript:editmember(' + ${member.getId()} + ',\''+${member.getPhone()}+'\',\''+${member.getEmail()}+'\')'" data-toggle="modal" data-target="#smallmodal"><i class="fa fa-edit"></i>&nbsp; Edit</button></td>
+                                    <td ><button type="button" class="btn btn-primary btn-sm" th:onclick="'javascript:editmember(' + ${member.getId()} + ',\''+${member.getName()}+'\',\''+${member.getGender()}+'\',\''+${member.getAge()}+'\')'" data-toggle="modal" data-target="#smallmodal"><i class="fa fa-edit"></i>&nbsp; Edit</button></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -231,7 +231,7 @@
 <div class="modal fade" id="smallmodal" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
-            <form id="leaderForm" class="form-horizontal" th:action="@{/zonaladmin/committed_members/updateinfo}" method="post">
+            <form id="leaderForm" class="form-horizontal" th:action="@{/zonaladmin/committed_members/updatepersonal}" method="post">
                 <div class="modal-header">
                     <h5 class="modal-title" id="smallmodalLabel">Edit Member</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -241,15 +241,23 @@
                 <div class="modal-body">
 
                     <input type="hidden" id="member" name="member"/>
-                    <input type="hidden" id="oldPhone" name="oldPhone"/>
-                    <input type="hidden" id="oldMail" name="oldMail"/>
                     <div class="row form-group">
-                        <div class="col col-md-3"><label for="mail" class=" form-control-label">Email</label></div>
-                        <div class="col-12 col-md-9"><input type="email" id="mail" name="mail" placeholder="mail" class="form-control"></div>
+                        <div class="col col-md-3"><label for="name" class=" form-control-label">Name</label></div>
+                        <div class="col-12 col-md-9"><input type="text" id="name" name="name" placeholder="name" class="form-control"></div>
                     </div>
                     <div class="row form-group">
-                        <div class="col col-md-3"><label for="phone" class=" form-control-label">Phone</label></div>
-                        <div class="col-12 col-md-9"><input type="text" id="phone" name="phone" placeholder="phone number" class="form-control"></div>
+                        <div class="col col-md-3"><label for="age" class=" form-control-label">Age</label></div>
+                        <div class="col-12 col-md-9"><input type="number" id="age" name="age" placeholder="age" class="form-control"></div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="gender" class=" form-control-label">Gender</label></div>
+                        <div class="col-12 col-md-9">
+                            <select name="gender" id="gender" class="form-control" required>
+                                <option value="" selected>Please select</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -284,12 +292,11 @@
     $(document).ready(function() {
         $('#bootstrap-data-table-export').DataTable();
     } );
-    function editmember(id,phone,email) {
+    function editmember(id,name,gender,age) {
         $('#member').val(id);
-        $('#oldPhone').val(phone);
-        $('#oldMail').val(email);
-        $('#mail').val(email);
-        $('#phone').val(phone);
+        $('#age').val(age);
+        $('#name').val(name);
+        $('#gender').val(gender);
     }
     $(window).load(function(){
         // PAGE IS FULLY LOADED

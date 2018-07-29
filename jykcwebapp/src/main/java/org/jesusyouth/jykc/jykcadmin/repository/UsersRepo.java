@@ -24,4 +24,9 @@ public interface UsersRepo extends CrudRepository<User,Integer> {
      List<User> findByZoneEqualsAndRoleContainsAndApprovedEquals(Integer zone,String role,Boolean isapproved);
 
      User findByAuthId(Integer id);
+
+     @Modifying
+     @Transactional
+     @Query(value = "update users set name=?2 where `member_id`=?1",nativeQuery = true)
+     void updateName(Integer member,String name);
 }
