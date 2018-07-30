@@ -28,6 +28,7 @@ public class CommittedMember {
     @Column(name = "is_group_member")
     private boolean groupMember;
     private Integer age;
+    @Transient
     private boolean vip;
 
     public CommittedMember() {

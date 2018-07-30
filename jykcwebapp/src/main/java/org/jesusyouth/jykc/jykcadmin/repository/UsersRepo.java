@@ -19,6 +19,8 @@ public interface UsersRepo extends CrudRepository<User,Integer> {
 
      User findFirstByEmailLike(String email);
 
+     User findFirstByPhoneLike(String phone);
+
      User findFirstByEmailLikeOrPhoneLike(String email,String phone);
 
      List<User> findByZoneEqualsAndRoleContainsAndApprovedEquals(Integer zone,String role,Boolean isapproved);

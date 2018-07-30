@@ -44,7 +44,20 @@ public class Authenticate {
                 || " ".equals(phone)){
             phone=DEFAULT;
         }
-        User user = usersRepo.findFirstByEmailLikeOrPhoneLike(email, phone);
+        boolean vip = false;
+        User specialUser = usersRepo.findFirstByEmailLike(email);
+
+        if (null != specialUser && specialUser.getRole().contains("web_admin")) {
+            vip = true;
+        }
+
+        User user;
+        if (vip) {
+            user = usersRepo.findFirstByPhoneLike(phone);
+            user.setVip(true);
+        } else {
+            user = usersRepo.findFirstByEmailLikeOrPhoneLike(email, phone);
+        }
         if (null == user) {
             CommittedMember committedMember = committedMembersRepo.findFirstCommittedMemberByEmailLikeOrPhoneLike(email, phone);
             if (null != committedMember) {
@@ -91,10 +104,6 @@ public class Authenticate {
         authUser.setRole(user.getRole());
         authUser.setZone(user.getZone());
         authUser.setUserid(user.getUserId());
-        if(user.getUserId()!=null){
-            CommittedMember committedMember = committedMembersRepo.findById(user.getUserId()).get();
-            authUser.setVip(committedMember.isVip());
-        }
         if(null!=user.getRole() && user.getRole().contains("group_leader")){
             GroupInfo groupInfo=groupInfoRepo.findByGroupLeaderEquals(user.getUserId());
             if (null!=groupInfo){
