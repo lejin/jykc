@@ -104,6 +104,7 @@ public class Authenticate {
         authUser.setRole(user.getRole());
         authUser.setZone(user.getZone());
         authUser.setUserid(user.getUserId());
+        authUser.setVip(user.isVip());
         if(null!=user.getRole() && user.getRole().contains("group_leader")){
             GroupInfo groupInfo=groupInfoRepo.findByGroupLeaderEquals(user.getUserId());
             if (null!=groupInfo){

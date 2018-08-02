@@ -165,6 +165,7 @@ public class StatiticsController {
             member.setGroupLeader(e.getGroupLeader());
             member.setGroupLeaderPhone(e.getGroupLeaderPhone());
             member.setHeadName(percodeMap.get(e.getHead()).getName());
+            member.setAccomadation(familyHeadAccomadationMap.get(e.getHead()).isAccomadation());
             familystatiticsDTOList.add(member);
         }) ;
         Iterable<GroupInfo> groupInfoList=groupInfoRepo.findAll();
