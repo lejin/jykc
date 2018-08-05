@@ -16,6 +16,7 @@ public class FamilystatiticsDTO {
     private String headName;
     private boolean highLight;
     private boolean accomadation;
+    private String zone;
 
     public String getName() {
         return name;
@@ -119,5 +120,13 @@ public class FamilystatiticsDTO {
 
     public void setAccomadation(boolean accomadation) {
         this.accomadation = accomadation;
+    }
+
+    public String getZone() {
+        return zone;
+    }
+
+    public void setZone(String zone) {
+        this.zone = zone;
     }
 }

@@ -27,6 +27,8 @@ public interface GroupInfoRepo extends CrudRepository<GroupInfo,Integer> {
 
     GroupInfo findFirstByGidEquals(Integer groupId);
 
+    List<GroupInfo> findAllByStatusLike(String status);
+
     @Modifying
     @Transactional
     @Query(value = "update group_info set status='submitted',group_is_editable=0 where gid=?1",nativeQuery = true)

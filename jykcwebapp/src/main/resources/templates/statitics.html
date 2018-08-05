@@ -214,10 +214,11 @@
                             <strong class="card-title">Families</strong>
                         </div>
                         <div class="card-body">
-                            <table id="blah" class="table table-striped table-bordered">
+                            <table id="families" class="table table-striped table-bordered">
                                 <thead>
                                 <tr>
                                     <th>No.</th>
+                                    <th>Zone</th>
                                     <th>Name</th>
                                     <th>Age</th>
                                     <th>Gender</th>
@@ -234,6 +235,7 @@
                                 <tbody>
                                 <tr th:each="family,itrStat : ${families}" th:style="${family.isHighLight()} ? 'background-color:yellow' : ''">
                                     <td th:text="${itrStat.index+1}">...</td>
+                                    <td th:text="${family.getZone()}">...</td>
                                     <td th:text="${family.getName()}">...</td>
                                     <td th:text="${family.getAge()}">...</td>
                                     <td th:text="${family.getGender()}">...</td>
@@ -243,7 +245,7 @@
                                     <td th:text="${family.getGroupLeader()}">...</td>
                                     <td th:text="${family.getGroupLeaderPhone()}">...</td>
                                     <td th:text="${family.getGroupCode()}">...</td>
-                                    <td th:text="${family.isAccomadation()}?'Yes':''">...</td>
+                                    <td th:text="${family.isAccomadation()}?'Yes':'No'">...</td>
 
                                 </tr>
                                 </tbody>
@@ -258,7 +260,7 @@
                             <strong class="card-title">Others</strong>
                         </div>
                         <div class="card-body">
-                            <table id="blah" class="table table-striped table-bordered">
+                            <table id="others" class="table table-striped table-bordered">
                                 <thead>
                                 <tr>
                                     <th>No.</th>

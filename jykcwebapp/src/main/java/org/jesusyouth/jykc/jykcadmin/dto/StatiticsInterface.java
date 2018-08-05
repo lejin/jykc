@@ -14,4 +14,6 @@ public interface StatiticsInterface {
     public String getGroupLeaderPhone();
 
     public String getGroupCode();
+
+    public Integer getGid();
 }

@@ -9,12 +9,32 @@
 
 
     $('#bootstrap-data-table').DataTable({
+        dom: 'lBfrtip',
         lengthMenu: [[10, 20, 50, -1], [10, 20, 50, "All"]],
+        buttons: [
+            'copy', 'excel', 'pdf', 'print'
+        ]
     });
 
 
 
     $('#bootstrap-data-table-export').DataTable({
+        dom: 'lBfrtip',
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        buttons: [
+            'copy', 'excel', 'pdf', 'print'
+        ]
+    });
+
+    $('#families').DataTable({
+        dom: 'lBfrtip',
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        buttons: [
+            'copy', 'excel', 'pdf', 'print'
+        ]
+    });
+
+    $('#others').DataTable({
         dom: 'lBfrtip',
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
         buttons: [

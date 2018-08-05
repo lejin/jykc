@@ -59,13 +59,15 @@
                             <table id="bootstrap-data-table" class="table table-striped table-bordered">
                                 <thead>
                                 <tr>
+                                    <th>No.</th>
                                     <th>Group</th>
                                     <th>Amount</th>
                                     <th>Remark</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="payments : ${payment}">
+                                <tr th:each="payments,itrStat : ${payment}">
+                                    <td th:text="${itrStat.index+1}">...</td>
                                     <td th:text="${payments.getGroupCode()}">...</td>
                                     <td th:text="${payments.getAmount()}">...</td>
                                     <td><textarea th:text="${payments.getRemark()}" disabled rows="4"></textarea></td>

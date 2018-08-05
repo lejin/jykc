@@ -9,7 +9,11 @@
 
 
     $('#bootstrap-data-table').DataTable({
-        lengthMenu: [[10, 20, 50, -1], [10, 20, 50, "All"]],
+        dom: 'lBfrtip',
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        buttons: [
+            'copy', 'excel', 'pdf', 'print'
+        ]
     });
 
 
@@ -21,7 +25,6 @@
             'copy', 'csv', 'excel', 'pdf', 'print'
         ]
     });
-	
 	$('#row-select').DataTable( {
 			initComplete: function () {
 				this.api().columns().every( function () {

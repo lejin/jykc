@@ -25,4 +25,6 @@ public interface FamilyStatiInterface {
 
     public Integer getInfo();
 
+    public String getZone();
+
 }
