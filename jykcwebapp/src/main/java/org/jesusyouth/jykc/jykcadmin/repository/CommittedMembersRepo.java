@@ -17,6 +17,8 @@ public interface CommittedMembersRepo extends CrudRepository<CommittedMember,Int
 
     CommittedMember findFirstCommittedMemberByEmailLikeOrPhoneLike(String email , String phone);
 
+    CommittedMember findFirstCommittedMemberByPhoneLike(String phone);
+
     @Modifying
     @Transactional
     @Query(value = "update committed_members set is_group_member=?1 where id=?2",nativeQuery = true)

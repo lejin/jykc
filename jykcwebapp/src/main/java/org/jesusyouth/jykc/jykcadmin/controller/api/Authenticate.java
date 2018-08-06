@@ -54,9 +54,30 @@ public class Authenticate {
         User user;
         if (vip) {
             user = usersRepo.findFirstByPhoneLike(phone);
-            user.setVip(true);
+            if(null!=user){
+                user.setVip(true);
+            }
         } else {
             user = usersRepo.findFirstByEmailLikeOrPhoneLike(email, phone);
+        }
+        if (null == user && vip) {
+            CommittedMember committedMember = committedMembersRepo.findFirstCommittedMemberByPhoneLike(phone);
+            if (null != committedMember) {
+//                committed member login first time
+                User newUser = new User();
+                if(!DEFAULT.equals(phone)){
+                    newUser.setPhone(phone);
+                }
+                newUser.setUserId(committedMember.getId());
+                newUser.setZone(committedMember.getZoneId());
+                newUser.setRole("member");
+                newUser.setEmail(committedMember.getEmail());
+                newUser.setName(committedMember.getName());
+                newUser.setVip(true);
+                usersRepo.save(newUser);
+                return convertFromUser(newUser);
+            }
+            return null;
         }
         if (null == user) {
             CommittedMember committedMember = committedMembersRepo.findFirstCommittedMemberByEmailLikeOrPhoneLike(email, phone);
