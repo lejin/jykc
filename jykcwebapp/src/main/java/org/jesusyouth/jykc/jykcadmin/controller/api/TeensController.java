@@ -53,7 +53,7 @@ public class TeensController {
 
         try {
             groupValidations.validateGroupMemberAge(TEEN, age);
-            groupValidations.validateGroupMembersCount(groupId);
+//            groupValidations.validateGroupMembersCount(groupId);
         } catch (GroupMemberValidationException e) {
             logger.error("XXXXXXX   validation error"+e.getMessage());
             GroupMembers groupMembers = new GroupMembers();
