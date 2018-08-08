@@ -6,6 +6,7 @@ import org.jesusyouth.jykc.jykcadmin.common.FamilyUtil;
 import org.jesusyouth.jykc.jykcadmin.common.GroupFee;
 import org.jesusyouth.jykc.jykcadmin.common.GroupMemberUtil;
 import org.jesusyouth.jykc.jykcadmin.dto.MembersWithTeensDto;
+import org.jesusyouth.jykc.jykcadmin.dto.PaymentDTO;
 import org.jesusyouth.jykc.jykcadmin.model.GroupInfo;
 import org.jesusyouth.jykc.jykcadmin.model.GroupMembers;
 import org.jesusyouth.jykc.jykcadmin.model.Payment;
@@ -92,6 +93,24 @@ public class AdminGroupController {
         model.addAttribute("total", total);
         model.addAttribute("payment", paymentList);
         return "admin_payment";
+    }
+
+    @GetMapping("/admin/payment_status")
+    public String getPaymentStatus(Model model) {
+        List<PaymentDTO> paid=paymentRepo.getPaidDetails();
+        List<PaymentDTO> notPaid=paymentRepo.getNotPaidDetails();
+
+        model.addAttribute("paid_total", paid.stream().map(e->e.getAmount()).reduce(Integer::sum).get());
+        model.addAttribute("paid_group_total", paid.stream().map(e->e.getGroups()).reduce(Integer::sum).get());
+
+        model.addAttribute("not_paid_total", notPaid.stream().map(e->e.getAmount()).reduce(Integer::sum).get());
+        model.addAttribute("not_paid_group_total", notPaid.stream().map(e->e.getGroups()).reduce(Integer::sum).get());
+
+
+        model.addAttribute("paid", paid);
+        model.addAttribute("not_paid", notPaid);
+
+        return "admin_paid_status";
     }
 
     @DeleteMapping("/admin/group_members")
