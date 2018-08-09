@@ -1,7 +1,9 @@
 package org.jesusyouth.jykc.jykcadmin.controller.web;
 
+import org.jesusyouth.jykc.jykcadmin.Constants.ZoneNames;
 import org.jesusyouth.jykc.jykcadmin.model.ReligiousPeople;
 import org.jesusyouth.jykc.jykcadmin.repository.ReligiousPeopleRepo;
+import org.jesusyouth.jykc.jykcadmin.repository.ZoneRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,6 +34,22 @@ public class ReligiousController {
     public String getAll(Integer memberID) {
         religiousPeopleRepo.deleteById(memberID);
         return "redirect:/zonaladmin/religous_list";
+    }
+
+    @GetMapping("/admin/religious")
+    public String getList(Model model, HttpSession httpSession) {
+        Iterable<ReligiousPeople> religiousPeopleList=religiousPeopleRepo.findAll();
+        religiousPeopleList.forEach(e->{
+            e.setZonaName( ZoneNames.ZONE_FULL_NAME_MAP.get(e.getZone()));
+        });
+        model.addAttribute("religious_people", religiousPeopleList);
+        return "admin_religious";
+    }
+
+    @DeleteMapping("/admin/religious_people")
+    public String delete(Integer memberID) {
+        religiousPeopleRepo.deleteById(memberID);
+        return "redirect:/admin/religious";
     }
 
    @GetMapping("/religious")

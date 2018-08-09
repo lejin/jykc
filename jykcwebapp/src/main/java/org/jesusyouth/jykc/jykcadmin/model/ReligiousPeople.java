@@ -18,6 +18,8 @@ public class ReligiousPeople {
     private boolean accomadation;
     private int age;
     private String category;
+    @Transient
+    private String zonaName;
 
     public ReligiousPeople() {
     }
@@ -108,5 +110,13 @@ public class ReligiousPeople {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getZonaName() {
+        return zonaName;
+    }
+
+    public void setZonaName(String zonaName) {
+        this.zonaName = zonaName;
     }
 }
