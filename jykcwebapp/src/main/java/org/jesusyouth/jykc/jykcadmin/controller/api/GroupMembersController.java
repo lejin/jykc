@@ -53,7 +53,7 @@ public class GroupMembersController {
                                   @RequestParam(required = false) Integer zoneId) {
 
         try {
-            //groupValidations.validateGroupMemberAge(category, age);
+            groupValidations.validateGroupMemberAge(category, age);
             //groupValidations.validateGroupMembersCount(groupId);
             //groupValidations.validateFamilyCount(groupId,category);
             groupValidations.validMember(userId);
@@ -88,8 +88,7 @@ public class GroupMembersController {
                                   @RequestParam(required = false) String userId,
                                   @RequestParam(required = false) String teenId) {
 
-//        return groupMemberUtil.removeGroupMember(groupId, userId, teenId);
-        return null;
+        return groupMemberUtil.removeGroupMember(groupId, userId, teenId);
     }
 
 

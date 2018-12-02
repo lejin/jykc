@@ -89,13 +89,16 @@ public class GroupLeaderApi {
         if(!StringUtils.isEmpty(role) && !role.contains("group_leader")){
             if("member".equals(role)){
                 user.setRole("group_leader");
+            }else if(role.contains("zonal_admin")){
+                role=role.concat("|group_leader");
+                user.setRole(role);
             }
         }else if(!StringUtils.isEmpty(role) && role.contains("group_leader")){
            // do nothong
         }else if(StringUtils.isEmpty(role)){
             user.setRole("group_leader");
         }else if(!StringUtils.isEmpty(role) && role.contains("zonal_admin")){
-            role.concat("|group_leader");
+            role=role.concat("|group_leader");
             user.setRole(role);
         }
         if ("family".equals(category)) {
