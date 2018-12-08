@@ -133,14 +133,14 @@ public class GroupController {
     }
 
     @DeleteMapping("/zonaladmin/group_members")
-    public String deleteGroupMember(@RequestParam Integer groupMemberID,@RequestParam Integer memberID,@RequestParam Integer groupID){
-        GroupMembers groupMembers = new GroupMembers();
-        groupMembers.setUid(groupMemberID);
-        groupMembersRepo.delete(groupMembers);
+    public String deleteGroupMember(@RequestParam Integer groupID,@RequestParam(required = false) Integer memberID,
+                                    @RequestParam(required = false) Integer teenID){
+        if(null!=teenID) {
+            groupMemberUtil.removeGroupMember(groupID, null, teenID.toString());
+            return "redirect:/zonaladmin/group_members/".concat(String.valueOf(groupID));
 
-        committedMembersRepo.updateIsGroupMember(0,memberID);
-
-
+        }
+        groupMemberUtil.removeGroupMember(groupID,memberID.toString(),null);
         return "redirect:/zonaladmin/group_members/".concat(String.valueOf(groupID));
     }
 

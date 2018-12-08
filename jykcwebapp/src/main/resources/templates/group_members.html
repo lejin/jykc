@@ -65,7 +65,7 @@
                                     <th>Age</th>
                                     <th>Gender</th>
                                     <th>Category</th>
-                                   <!-- <th>Action</th> -->
+                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -76,7 +76,11 @@
                                     <td th:text="${member.getAge()}">...</td>
                                     <td th:text="${member.getGender()}">...</td>
                                     <td th:text="${member.getCategory()}">...</td>
-                                   <!-- <td ><button type="button" class="btn btn-primary btn-sm" th:onclick="'javascript:changeCategory('+${member.getId()}+',\''+${member.getCategory()}+'\')'" data-toggle="modal" data-target="#smallmodal"><i class="fa fa-pencil"></i>&nbsp; Edit Category</button></td> -->
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-sm" th:onclick="'javascript:changeCategory('+${member.getId()}+',\''+${member.getCategory()}+'\')'" data-toggle="modal" data-target="#smallmodal"><i class="fa fa-pencil"></i>&nbsp; Edit Category</button>
+                                        <button th:if="${member.isIs_group_member()}" type="button" th:onclick="'javascript:removeMember('+${member.getId()}+','+${member.getGid()}+')'" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#smallmodal2"><i class="fa fa-times"></i>&nbsp; Delete</button>
+                                        <button th:if="${member.getTeenId() !=null}" type="button" th:onclick="'javascript:removeTeen('+${member.getTeenId()}+','+${member.getGid()}+')'" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#smallmodal2"><i class="fa fa-times"></i>&nbsp; Delete</button>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -129,6 +133,34 @@
     </div>
 </div>
 
+<div class="modal fade" id="smallmodal2" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="smallmodalLabel2">Delete Member</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <p>
+                    Delete group member ?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit"  class="btn btn-danger" onclick="proceedDelete()">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="deleteMemberForm" action="#" th:action="@{/zonaladmin/group_members}" th:method="delete">
+    <input type="hidden" id="memberID" name="memberID"/>
+    <input type="hidden" id="teenID" name="teenID"/>
+    <input type="hidden" id="groupID" name="groupID"/>
+</form>
 
 <script th:src="@{~/zonaladmin/assets/js/vendor/jquery-2.1.4.min.js}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
@@ -157,6 +189,24 @@
         $('#member').val(uid);
         $('#oldCategory').val(oldCategory);
 
+    }
+
+    function removeMember(id,gid) {
+        $('#memberID').val(id);
+        $('#groupID').val(gid);
+        $('#teenID').val(null);
+
+    }
+
+    function removeTeen(id,gid) {
+        $('#teenID').val(id);
+        $('#groupID').val(gid);
+        $('#memberID').val(null);
+
+    }
+
+    function proceedDelete() {
+        $('#deleteMemberForm').submit();
     }
 </script>
 
