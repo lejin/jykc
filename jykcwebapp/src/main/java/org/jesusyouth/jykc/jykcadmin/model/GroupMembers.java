@@ -28,6 +28,12 @@ public class GroupMembers {
     @Transient
     private GroupInfo groupInfo;
 
+    @Column(name = "paid")
+    private boolean paid;
+
+    @Column(name = "payment_remark")
+    private String paymentRemark;
+
     public Integer getUid() {
         return uid;
     }
@@ -91,5 +97,21 @@ public class GroupMembers {
 
     public void setGroupInfo(GroupInfo groupInfo) {
         this.groupInfo = groupInfo;
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+
+    public String getPaymentRemark() {
+        return paymentRemark;
+    }
+
+    public void setPaymentRemark(String paymentRemark) {
+        this.paymentRemark = paymentRemark;
     }
 }

@@ -56,5 +56,11 @@ public interface GroupMemberDTO {
 
     public String getCategory();
 
+    public boolean getPaid();
+
+    String getPayment_remark();
+
+    Integer getUid();
+
 
 }

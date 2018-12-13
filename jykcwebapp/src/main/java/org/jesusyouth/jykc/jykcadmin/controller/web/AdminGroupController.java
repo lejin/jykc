@@ -24,6 +24,7 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 public class AdminGroupController {
@@ -42,6 +43,9 @@ public class AdminGroupController {
 
     @Autowired
     private FamilyUtil familyUtil;
+
+    @Autowired
+    private GroupMembersRepo groupMembersRepo;
 
     @GetMapping("/admin/group_info")
     public String getGroupInfo(Model model, HttpSession httpSession) {
@@ -75,6 +79,18 @@ public class AdminGroupController {
         groupInfo.setStatus("Payment received");
         groupInfoRepo.save(groupInfo);
         return "redirect:/admin/group_info";
+    }
+
+    @PostMapping("/admin/member/payment")
+    public String paymentRemark(@RequestParam Integer group,@RequestParam Integer uid,@RequestParam String remark){
+        Optional<GroupMembers> groupMembers=groupMembersRepo.findById(uid);
+        if(groupMembers.isPresent()){
+            GroupMembers groupMembers1=groupMembers.get();
+            groupMembers1.setPaid(true);
+            groupMembers1.setPaymentRemark(remark);
+            groupMembersRepo.save(groupMembers1);
+        }
+        return "redirect:/admin/group_members/".concat(String.valueOf(group));
     }
 
     @GetMapping("/admin/payment")

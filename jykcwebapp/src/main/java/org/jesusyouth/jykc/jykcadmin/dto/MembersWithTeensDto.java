@@ -45,6 +45,12 @@ public class MembersWithTeensDto implements Serializable {
 
     private Integer gid;
 
+    private boolean paid;
+
+    private String paymentRemark;
+
+    private Integer uid;
+
     public Integer getId() {
         return id;
     }
@@ -211,5 +217,29 @@ public class MembersWithTeensDto implements Serializable {
 
     public void setGid(Integer gid) {
         this.gid = gid;
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+
+    public String getPaymentRemark() {
+        return paymentRemark;
+    }
+
+    public void setPaymentRemark(String paymentRemark) {
+        this.paymentRemark = paymentRemark;
+    }
+
+    public Integer getUid() {
+        return uid;
+    }
+
+    public void setUid(Integer uid) {
+        this.uid = uid;
     }
 }

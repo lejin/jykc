@@ -65,7 +65,7 @@
                                     <th>Age</th>
                                     <th>Gender</th>
                                     <th>Category</th>
-                                    <th>Action</th>
+                                    <!-- <th>Action</th> -->
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -76,10 +76,11 @@
                                     <td th:text="${member.getAge()}">...</td>
                                     <td th:text="${member.getGender()}">...</td>
                                     <td th:text="${member.getCategory()}">...</td>
-                                    <td>
-                                        <button type="button" class="btn btn-primary btn-sm" th:onclick="'javascript:changeCategory('+${member.getId()}+',\''+${member.getCategory()}+'\')'" data-toggle="modal" data-target="#smallmodal"><i class="fa fa-pencil"></i>&nbsp; Edit Category</button>
-                                        <button th:if="${member.isIs_group_member()}" type="button" th:onclick="'javascript:removeMember('+${member.getId()}+','+${member.getGid()}+')'" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#smallmodal2"><i class="fa fa-times"></i>&nbsp; Delete</button>
-                                        <button th:if="${member.getTeenId() !=null}" type="button" th:onclick="'javascript:removeTeen('+${member.getTeenId()}+','+${member.getGid()}+')'" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#smallmodal2"><i class="fa fa-times"></i>&nbsp; Delete</button>
+                                 <td>
+                                        <!--<button type="button" class="btn btn-primary btn-sm" th:onclick="'javascript:changeCategory('+${member.getId()}+',\''+${member.getCategory()}+'\')'" data-toggle="modal" data-target="#smallmodal"><i class="fa fa-pencil"></i>&nbsp; Edit Category</button>-->
+                                        <button th:if="${member.isIs_group_member()    && disable_delete==false}" type="button" th:onclick="'javascript:removeMember('+${member.getId()}+','+${member.getGid()}+')'" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#smallmodal2"><i class="fa fa-times"></i>&nbsp; Delete</button>
+                                        <button th:if="${member.getTeenId() !=null && disable_delete==false}" type="button" th:onclick="'javascript:removeTeen('+${member.getTeenId()}+','+${member.getGid()}+')'" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#smallmodal2"><i class="fa fa-times"></i>&nbsp; Delete</button>
+                                        <span th:if="${member.isIs_group_leader()}"><i class="ti-crown"></i></span>
                                     </td>
                                 </tr>
                                 </tbody>

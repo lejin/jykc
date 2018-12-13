@@ -7,6 +7,7 @@ import org.jesusyouth.jykc.jykcadmin.common.GroupFee;
 import org.jesusyouth.jykc.jykcadmin.common.GroupMemberUtil;
 import org.jesusyouth.jykc.jykcadmin.dto.GroupMemberDTO;
 import org.jesusyouth.jykc.jykcadmin.dto.MembersWithTeensDto;
+import org.jesusyouth.jykc.jykcadmin.model.DeleteDisabled;
 import org.jesusyouth.jykc.jykcadmin.model.GroupInfo;
 import org.jesusyouth.jykc.jykcadmin.model.GroupMembers;
 import org.jesusyouth.jykc.jykcadmin.repository.*;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -41,6 +43,9 @@ public class GroupController {
 
     @Autowired
     private FamilyUtil familyUtil;
+
+    @Autowired
+    private DeleteDisabledRepo deleteDisabledRepo;
 
     @GetMapping("/zonaladmin/group_info")
     public String getGroupInfo(Model model, HttpSession httpSession) {
@@ -97,6 +102,13 @@ public class GroupController {
         }
         model.addAttribute("group_members", membersWithTeensDtos);
         model.addAttribute("group_id", groupID);
+        Iterable<DeleteDisabled> deleteDisabledZones= deleteDisabledRepo.findAll();
+        model.addAttribute("disable_delete",false);
+       deleteDisabledZones.forEach(e->{
+           if(e.getZone().intValue()==zone.intValue()){
+               model.addAttribute("disable_delete",true);
+           }
+       });
         return "group_members";
     }
 

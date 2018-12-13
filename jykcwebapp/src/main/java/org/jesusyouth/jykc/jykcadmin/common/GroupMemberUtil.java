@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 public class GroupMemberUtil {
@@ -43,6 +46,8 @@ public class GroupMemberUtil {
 
     public List<MembersWithTeensDto> getMembersWithTeensDtos(Integer groupId) {
         List<GroupMemberDTO> groupMemberDTOS = groupMembersRepo.getAllMembers(groupId);
+        List<GroupMembers> groupMembers=groupMembersRepo.getAllByGroupIdEquals(groupId);
+        Map<Integer,GroupMembers> paidmap=groupMembers.stream().filter(e->null!=e.getTeenId()).collect(Collectors.toMap(m->m.getTeenId(), Function.identity()));
         List<Teen> teenList = teensRepo.findAllByTeenGroupIdEquals(groupId);
         List<MembersWithTeensDto> membersWithTeensDtos = new ArrayList<>();
         groupMemberDTOS.forEach(e -> {
@@ -52,6 +57,9 @@ public class GroupMemberUtil {
                 membersWithTeensDto.setIs_group_leader(e.getIs_group_leader());
                 membersWithTeensDto.setIs_group_member(e.getIs_group_member());
                 membersWithTeensDto.setGid(groupId);
+                membersWithTeensDto.setPaid(e.getPaid());
+                membersWithTeensDto.setUid(e.getUid());
+                membersWithTeensDto.setPaymentRemark(e.getPayment_remark());
                 membersWithTeensDtos.add(membersWithTeensDto);
             } catch (Exception ex) {
                 logger.error(ex.getMessage());
@@ -69,6 +77,10 @@ public class GroupMemberUtil {
                     membersWithTeensDto.setCategory("student");
                     membersWithTeensDto.setTeenId(e.getTeenId());
                     membersWithTeensDto.setGid(groupId);
+                    GroupMembers groupMembers1=paidmap.get(e.getTeenId());
+                    membersWithTeensDto.setPaid(groupMembers1.isPaid());
+                    membersWithTeensDto.setPaymentRemark(groupMembers1.getPaymentRemark());
+                    membersWithTeensDto.setUid(groupMembers1.getUid());
                     membersWithTeensDtos.add(membersWithTeensDto);
                 } catch (Exception ex) {
                     logger.error(ex.getMessage());
