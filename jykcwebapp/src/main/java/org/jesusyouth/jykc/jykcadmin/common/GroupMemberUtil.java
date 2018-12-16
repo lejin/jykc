@@ -1,6 +1,7 @@
 package org.jesusyouth.jykc.jykcadmin.common;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.jesusyouth.jykc.jykcadmin.Constants.ZoneNames;
 import org.jesusyouth.jykc.jykcadmin.dto.GroupMemberDTO;
 import org.jesusyouth.jykc.jykcadmin.dto.MembersWithTeensDto;
 import org.jesusyouth.jykc.jykcadmin.model.GroupInfo;
@@ -99,6 +100,7 @@ public class GroupMemberUtil {
             groupMembersRepo.deleteGroupMembersByTeenIdEquals(teen);
             groupInfo=groupFeeComponent.reduceGroupFee(groupId, "student");
             groupInfo.setMessage("success");
+            logger.info("deleting teen from zone"+ ZoneNames.ZONE_FULL_NAME_MAP.get(groupInfo.getGroupZone()));
             return groupInfo;
         }
         Integer userIdInt=Integer.valueOf(StringUtils.trimAllWhitespace(userId));
@@ -122,6 +124,7 @@ public class GroupMemberUtil {
                 familyUtil.deleteFamily(userIdInt);
             }
             groupInfo.setMessage("success");
+            logger.info("deleting member from zone"+ ZoneNames.ZONE_FULL_NAME_MAP.get(groupInfo.getGroupZone()));
         }
         return groupInfo;
     }

@@ -11,6 +11,8 @@ import org.jesusyouth.jykc.jykcadmin.model.DeleteDisabled;
 import org.jesusyouth.jykc.jykcadmin.model.GroupInfo;
 import org.jesusyouth.jykc.jykcadmin.model.GroupMembers;
 import org.jesusyouth.jykc.jykcadmin.repository.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,6 +48,9 @@ public class GroupController {
 
     @Autowired
     private DeleteDisabledRepo deleteDisabledRepo;
+
+    private static final Logger logger = LoggerFactory.getLogger(GroupMemberUtil.class);
+
 
     @GetMapping("/zonaladmin/group_info")
     public String getGroupInfo(Model model, HttpSession httpSession) {
@@ -123,7 +128,9 @@ public class GroupController {
 
         committedMembersRepo.updateIsGroupMemberAndAge(1,age,zone,memberID);
 
+        GroupInfo groupInfo = groupInfoRepo.findFirstByGidEquals(groupID);
 
+        logger.info("adding group member in zone"+ZoneNames.ZONE_FULL_NAME_MAP.get(groupInfo.getGroupZone()));
         return "redirect:/zonaladmin/group_members/".concat(String.valueOf(groupID));
     }
 

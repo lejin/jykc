@@ -151,7 +151,7 @@ public class GroupLeaderApi {
             groupMembersRepo.deleteByGroupIdEquals(groupInfo.getGid());
             groupInfoRepo.delete(groupInfo);
             user.setApproved(false);
-            if("group_leader".equals(user.getRole())){
+            if(user.getRole().contains("group_leader")){
                 user.setRole("member");
             }
             familyUtil.deleteFamily(user.getUserId());
