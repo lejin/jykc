@@ -27,6 +27,8 @@ public interface UsersRepo extends CrudRepository<User,Integer> {
 
      User findByAuthId(Integer id);
 
+     User findByUserIdEquals(Integer userid);
+
      @Modifying
      @Transactional
      @Query(value = "update users set name=?2 where `member_id`=?1",nativeQuery = true)
